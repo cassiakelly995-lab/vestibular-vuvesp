@@ -3,386 +3,651 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNESP Study Hub — Exatas & Humanidades</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>UNESP Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════
+   BASE TOKENS
+══════════════════════════════════════════ */
 :root{
-  --bg:#08080f;--bg2:#0f0f1a;--bg3:#16162a;--bg4:#1e1e35;
-  --border:#2a2a45;--border2:#3d3d60;
-  --text:#f0ecff;--muted:#7070a8;--dim:#3a3a5a;
-  --accent:#7c5cfc;--accent2:#b47cfc;--accent3:#5c3cdc;
-  --gold:#f0b429;--gold2:#ffd060;
-  --green:#22c55e;--red:#ef4444;--cyan:#06b6d4;--pink:#ec4899;
+  --ink:#0c0c14;--ink2:#11111f;--ink3:#181828;--ink4:#20203a;
+  --line:#ffffff0f;--line2:#ffffff18;--line3:#ffffff28;
+  --txt:#e8e3ff;--sub:#8888b8;--dim:#44445a;
+  --v:#7c5cfc;--v2:#a07cfc;--v3:#5238c8;
+  --go:#f0b429;--go2:#ffe082;
+  --ok:#22c55e;--no:#f43f5e;--cy:#06b6d4;--pi:#ec4899;--or:#fb923c;
+  --r:14px;--r2:10px;--r3:20px;
+  --sh:0 4px 24px #0000004a;--sh2:0 12px 48px #00000066;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 70% 40% at 15% 15%,rgba(124,92,252,.07) 0%,transparent 60%),
-  radial-gradient(ellipse 50% 30% at 85% 85%,rgba(240,180,41,.05) 0%,transparent 60%)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--ink);
+  color:var(--txt);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-/* HEADER */
-.hdr{position:sticky;top:0;z-index:200;background:rgba(8,8,15,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.hdr-in{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px;gap:12px}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.logo-name{font-family:"Playfair Display",serif;font-size:18px;color:var(--text);line-height:1}
-.logo-tag{font-size:10px;color:var(--muted);font-family:"JetBrains Mono",monospace;margin-top:2px}
-.hdr-stats{display:flex;gap:7px;flex-wrap:wrap}
-.stat-pill{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:11px;color:var(--muted);font-family:"JetBrains Mono",monospace;white-space:nowrap}
-.stat-pill span{color:var(--accent2)}
+/* ── NOISE + GRID OVERLAY ── */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% 0%,rgba(124,92,252,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 100%,rgba(240,180,41,.08) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,rgba(6,182,212,.05) 0%,transparent 60%);
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.018;
+  background-image:repeating-linear-gradient(0deg,#fff 0px,#fff 1px,transparent 1px,transparent 60px),
+    repeating-linear-gradient(90deg,#fff 0px,#fff 1px,transparent 1px,transparent 60px);
+}
 
-/* NAV */
-.nav{background:rgba(15,15,26,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:190;overflow-x:auto}
-.nav-in{max-width:1440px;margin:0 auto;display:flex;padding:0 24px;gap:2px}
-.nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);padding:13px 16px;cursor:pointer;font-size:13px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:600;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:6px}
-.nav-btn:hover{color:var(--text)}
-.nav-btn.active{color:var(--accent2);border-bottom-color:var(--accent)}
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.hdr{
+  position:sticky;top:0;z-index:300;
+  background:rgba(12,12,20,.88);
+  backdrop-filter:blur(28px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.hdr-in{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:62px;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--v),var(--v2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;box-shadow:0 4px 14px rgba(124,92,252,.4);
+}
+.brand-name{
+  font-family:'Instrument Serif',serif;font-size:20px;
+  color:var(--txt);line-height:1.1;
+}
+.brand-sub{font-size:10px;color:var(--sub);font-family:'DM Mono',monospace;margin-top:1px}
+.hdr-pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{
+  background:var(--ink3);border:1px solid var(--line2);
+  border-radius:30px;padding:4px 12px;
+  font-size:11px;color:var(--sub);font-family:'DM Mono',monospace;white-space:nowrap;
+}
+.pill b{color:var(--v2)}
 
-/* MAIN */
-.main{max-width:1440px;margin:0 auto;padding:22px 24px}
-.tab{display:none}.tab.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.tab.active{animation:fadeIn .25s ease}
+/* ══════════════════════════════════════════
+   NAV BAR
+══════════════════════════════════════════ */
+.nav{
+  position:sticky;top:62px;z-index:200;
+  background:rgba(17,17,31,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);overflow-x:auto;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-in{max-width:1400px;margin:0 auto;display:flex;padding:0 28px}
+.nb{
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--sub);padding:14px 18px;cursor:pointer;
+  font-size:12px;font-family:'Syne',sans-serif;font-weight:700;
+  white-space:nowrap;transition:all .2s;letter-spacing:.3px;
+  display:flex;align-items:center;gap:7px;text-transform:uppercase;
+}
+.nb:hover{color:var(--txt)}
+.nb.on{color:var(--v2);border-bottom-color:var(--v)}
 
-/* FILTROS */
-.filters-bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
-.filters-label{font-size:10px;color:var(--muted);font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.5px;margin-right:4px;white-space:nowrap}
-.filt{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 13px;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;transition:all .2s;color:var(--muted)}
-.filt:hover{border-color:var(--border2);color:var(--text)}
-.filt.on{color:#fff}
-.diff-bar{display:flex;gap:5px}
-.diff-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;transition:all .2s;color:var(--muted)}
-.diff-btn.on[data-d="0"]{background:var(--bg4);border-color:var(--border2);color:var(--text)}
-.diff-btn.on[data-d="1"]{background:rgba(34,197,94,.15);border-color:#22c55e;color:#22c55e}
-.diff-btn.on[data-d="2"]{background:rgba(240,180,41,.15);border-color:var(--gold);color:var(--gold)}
-.diff-btn.on[data-d="3"]{background:rgba(239,68,68,.15);border-color:var(--red);color:var(--red)}
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+.main{max-width:1400px;margin:0 auto;padding:28px 28px 60px}
+.tab{display:none}.tab.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* CARDS */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px}
-.card{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:17px;cursor:pointer;transition:all .3s;min-height:125px;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;background:linear-gradient(135deg,rgba(124,92,252,.08),transparent);pointer-events:none}
+/* ══════════════════════════════════════════
+   FILTROS
+══════════════════════════════════════════ */
+.fbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.flabel{font-size:10px;color:var(--dim);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.6px;margin-right:4px}
+.fc{
+  background:var(--ink3);border:1px solid var(--line2);
+  border-radius:30px;padding:4px 13px;cursor:pointer;
+  font-size:12px;font-weight:700;font-family:'Syne',sans-serif;
+  transition:all .2s;color:var(--sub);letter-spacing:.2px;
+}
+.fc:hover{border-color:var(--line3);color:var(--txt)}
+.fc.on{color:#fff}
+.dbar{display:flex;gap:5px}
+.dc{
+  background:var(--ink3);border:1px solid var(--line2);
+  border-radius:8px;padding:5px 13px;cursor:pointer;
+  font-size:11px;font-weight:700;font-family:'DM Mono',monospace;
+  transition:all .2s;color:var(--sub);
+}
+.dc.on[data-d="0"]{background:var(--ink4);border-color:var(--line3);color:var(--txt)}
+.dc.on[data-d="1"]{background:rgba(34,197,94,.12);border-color:var(--ok);color:var(--ok)}
+.dc.on[data-d="2"]{background:rgba(240,180,41,.12);border-color:var(--go);color:var(--go)}
+.dc.on[data-d="3"]{background:rgba(244,63,94,.12);border-color:var(--no);color:var(--no)}
+
+/* ══════════════════════════════════════════
+   SECÇÃO TÍTULO
+══════════════════════════════════════════ */
+.sec-hd{margin-bottom:22px}
+.sec-title{
+  font-family:'Instrument Serif',serif;font-size:26px;
+  color:var(--txt);line-height:1.2;margin-bottom:4px;
+}
+.sec-sub{font-size:12px;color:var(--sub);line-height:1.6}
+
+/* ══════════════════════════════════════════
+   PROGRESS BAR TOPO
+══════════════════════════════════════════ */
+.prog-strip{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r);padding:14px 20px;
+  display:flex;gap:20px;flex-wrap:wrap;align-items:center;
+  margin-bottom:20px;
+}
+.ps-item{display:flex;flex-direction:column;gap:2px}
+.ps-label{font-size:10px;color:var(--dim);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px}
+.ps-val{font-size:22px;font-weight:800;font-family:'DM Mono',monospace}
+.ps-bar-wrap{flex:1;min-width:200px}
+.ps-bar{height:5px;background:var(--line2);border-radius:3px;overflow:hidden;margin-top:5px}
+.ps-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* ══════════════════════════════════════════
+   FLASHCARDS
+══════════════════════════════════════════ */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px}
+.card{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r);padding:18px;cursor:pointer;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+  min-height:130px;position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;opacity:0;
+  background:linear-gradient(135deg,rgba(124,92,252,.09),transparent 70%);
+  transition:opacity .3s;pointer-events:none;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:var(--sh)}
 .card:hover::before,.card.flip::before{opacity:1}
-.card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.card.flip{border-color:rgba(124,92,252,.45);box-shadow:0 6px 24px rgba(124,92,252,.14)}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;gap:6px;flex-wrap:wrap}
-.stag{border-radius:7px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.2px}
-.diff-tag{border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;font-family:"JetBrains Mono",monospace}
-.d1{background:rgba(34,197,94,.12);color:#22c55e}
-.d2{background:rgba(240,180,41,.12);color:var(--gold)}
-.d3{background:rgba(239,68,68,.12);color:var(--red)}
-.card-q{font-size:13px;line-height:1.55;color:var(--text);font-weight:600;margin-bottom:5px}
-.card-hint{font-size:11px;color:var(--dim);font-style:italic}
-.card-ans{display:none;border-top:1px solid var(--border);padding-top:9px;margin-top:7px;font-size:12px;line-height:1.7;color:#b0a8d0}
+.card.flip{border-color:rgba(124,92,252,.4);box-shadow:0 8px 32px rgba(124,92,252,.14)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:6px}
+.stag{border-radius:7px;padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.dtag{border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace}
+.d1{background:rgba(34,197,94,.12);color:var(--ok)}
+.d2{background:rgba(240,180,41,.12);color:var(--go)}
+.d3{background:rgba(244,63,94,.12);color:var(--no)}
+.card-q{font-size:13px;line-height:1.6;color:var(--txt);font-weight:600;margin-bottom:6px}
+.card-hint{font-size:11px;color:var(--dim);font-style:italic;display:flex;align-items:center;gap:5px}
+.card-ans{
+  display:none;border-top:1px solid var(--line);
+  padding-top:10px;margin-top:8px;
+  font-size:13px;line-height:1.7;color:#c0b8e0;
+}
 .card.flip .card-ans{display:block}
 .card.flip .card-hint{display:none}
-.card-ok{position:absolute;top:10px;right:10px;font-size:13px;opacity:.75}
+.card-check{position:absolute;top:11px;right:11px;width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,.2);border:1px solid var(--ok);display:flex;align-items:center;justify-content:center;font-size:11px}
+.empty{text-align:center;padding:60px 20px;color:var(--dim);font-size:14px}
 
-/* QUIZ */
-.quiz-wrap{max-width:700px;margin:0 auto}
-.quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.quiz-prog{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
-.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s}
-.quiz-meta{display:flex;gap:14px;font-size:11px;font-family:"JetBrains Mono",monospace;white-space:nowrap}
-.ok-c{color:#22c55e}.err-c{color:var(--red)}
-.quiz-box{background:var(--bg3);border:1px solid var(--border);border-radius:15px;padding:26px;margin-bottom:14px}
-.quiz-box-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.quiz-src{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace}
-.quiz-q{font-size:15px;line-height:1.65;color:var(--text);font-weight:600}
+/* ══════════════════════════════════════════
+   QUIZ
+══════════════════════════════════════════ */
+.quiz-wrap{max-width:720px;margin:0 auto}
+.quiz-hdr{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.qprog{flex:1;height:4px;background:var(--line2);border-radius:2px;overflow:hidden}
+.qprog-fill{height:100%;background:linear-gradient(90deg,var(--v),var(--v2));border-radius:2px;transition:width .4s}
+.qmeta{display:flex;gap:14px;font-size:12px;font-family:'DM Mono',monospace;white-space:nowrap}
+.q-ok{color:var(--ok)}.q-no{color:var(--no)}
+.qbox{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r);padding:28px;margin-bottom:14px;
+}
+.qbox-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.qsrc{font-size:10px;color:var(--dim);font-family:'DM Mono',monospace}
+.qq{font-size:16px;line-height:1.7;color:var(--txt);font-weight:600}
 .opts{display:flex;flex-direction:column;gap:9px}
-.opt{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:12px 16px;text-align:left;cursor:pointer;font-family:inherit;font-size:13px;line-height:1.45;transition:all .2s}
-.opt:hover:not(:disabled){border-color:var(--accent);background:rgba(124,92,252,.09)}
-.opt.ok{background:rgba(34,197,94,.11);border-color:#22c55e;color:#86efac;font-weight:700}
-.opt.err{background:rgba(239,68,68,.11);border-color:var(--red);color:#fca5a5;font-weight:700}
+.opt{
+  background:var(--ink2);border:1px solid var(--line);color:var(--txt);
+  border-radius:var(--r2);padding:13px 17px;text-align:left;
+  cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;
+  line-height:1.45;transition:all .2s;font-weight:500;
+}
+.opt:hover:not(:disabled){border-color:var(--v);background:rgba(124,92,252,.1)}
+.opt.ok{background:rgba(34,197,94,.1);border-color:var(--ok);color:#86efac;font-weight:700}
+.opt.no{background:rgba(244,63,94,.1);border-color:var(--no);color:#fda4af;font-weight:700}
 .opt:disabled{cursor:default}
-.quiz-exp{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.22);border-radius:9px;padding:14px;margin:11px 0;font-size:12px;color:#86efac;line-height:1.7}
-.quiz-exp strong{color:#22c55e}
-.btn{background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;border:none;border-radius:9px;padding:11px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
-.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(124,92,252,.38)}
+.qexp{
+  background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.2);
+  border-radius:var(--r2);padding:14px 17px;margin:12px 0;
+  font-size:13px;color:#86efac;line-height:1.75;
+}
+.qexp strong{color:var(--ok)}
+.btn{
+  background:linear-gradient(135deg,var(--v),var(--v3));color:#fff;border:none;
+  border-radius:var(--r2);padding:12px 24px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Syne',sans-serif;transition:all .22s;letter-spacing:.2px;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(124,92,252,.45)}
 .btn:disabled{background:var(--dim);cursor:not-allowed;transform:none;box-shadow:none}
-.btn-full{width:100%}
-.btn-sec{background:var(--bg4);border:1px solid var(--border2);color:var(--muted);border-radius:7px;padding:5px 13px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
-.btn-sec:hover{border-color:var(--accent);color:var(--text)}
-.quiz-done{text-align:center;padding:44px 28px;background:var(--bg3);border:1px solid var(--border);border-radius:15px}
-.quiz-done-emoji{font-size:60px;margin-bottom:14px;line-height:1}
-.quiz-done h2{font-family:"Playfair Display",serif;font-size:26px;color:var(--text);margin-bottom:8px}
-.quiz-done .score{font-size:44px;font-weight:900;font-family:"JetBrains Mono",monospace;margin:8px 0}
-.quiz-done p{color:var(--muted);margin-bottom:22px;font-size:13px}
+.btn-w{width:100%}
+.btn-out{
+  background:var(--ink4);border:1px solid var(--line2);color:var(--sub);
+  border-radius:8px;padding:6px 16px;cursor:pointer;font-family:'Syne',sans-serif;
+  font-size:12px;font-weight:700;transition:all .2s;
+}
+.btn-out:hover{border-color:var(--v);color:var(--txt)}
+.quiz-done{
+  text-align:center;padding:52px 32px;
+  background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);
+}
+.qd-emoji{font-size:64px;margin-bottom:18px;line-height:1;display:block}
+.qd-h{font-family:'Instrument Serif',serif;font-size:30px;margin-bottom:8px}
+.qd-score{font-size:52px;font-weight:900;font-family:'DM Mono',monospace;margin:8px 0;line-height:1}
+.qd-p{color:var(--sub);font-size:14px;margin-bottom:26px;line-height:1.6}
 
-/* REDAÇÃO */
-.essay-wrap{max-width:840px;margin:0 auto}
-.essay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
-@media(max-width:620px){.essay-grid{grid-template-columns:1fr}}
-.essay-card{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:18px;cursor:pointer;transition:all .2s}
-.essay-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.essay-card h4{color:var(--text);font-size:13px;line-height:1.5;margin-bottom:7px}
-.essay-card p{color:var(--muted);font-size:11px;line-height:1.55}
-.etag{display:inline-block;margin-bottom:9px;font-size:10px;font-weight:700;border-radius:5px;padding:2px 8px}
-.essay-top{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.tip-box{background:rgba(124,92,252,.07);border:1px solid rgba(124,92,252,.18);border-radius:11px;padding:14px 17px;margin-bottom:13px;font-size:13px;color:var(--muted);line-height:1.7}
-.tip-box strong{color:var(--accent2)}
-.comp-box{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:11px 15px;margin-bottom:11px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:11px;color:var(--muted)}
-.comp-tag{background:var(--bg4);border:1px solid var(--border2);border-radius:5px;padding:2px 8px;font-size:11px;font-weight:600;color:var(--dim)}
-textarea{width:100%;min-height:300px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:18px;color:var(--text);font-size:14px;line-height:1.75;font-family:"Plus Jakarta Sans",sans-serif;resize:vertical;outline:none;transition:border-color .2s}
-textarea:focus{border-color:var(--accent)}
-.essay-footer{display:flex;justify-content:space-between;align-items:center;margin-top:11px;flex-wrap:wrap;gap:9px}
-.wcount{font-size:11px;color:var(--muted);font-family:"JetBrains Mono",monospace}
-.essay-fb{margin-top:18px;background:var(--bg2);border:1px solid rgba(124,92,252,.28);border-radius:13px;padding:22px}
-.essay-fb h4{color:var(--accent2);margin-bottom:13px;font-size:14px}
-.essay-fb-text{font-size:13px;line-height:1.85;color:#c0b8d8;white-space:pre-wrap}
+/* ══════════════════════════════════════════
+   REDAÇÃO
+══════════════════════════════════════════ */
+.essay-wrap{max-width:920px;margin:0 auto}
+.etopics{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:24px}
+.etcard{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r);padding:20px;cursor:pointer;transition:all .22s;
+  position:relative;overflow:hidden;
+}
+.etcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px;background:var(--c,var(--v))}
+.etcard:hover{border-color:var(--line3);transform:translateY(-2px);box-shadow:var(--sh)}
+.et-tipo{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:block}
+.et-titulo{color:var(--txt);font-size:14px;line-height:1.5;font-weight:700;margin-bottom:8px}
+.et-dica{color:var(--sub);font-size:12px;line-height:1.55}
 
-/* PROVAS */
-.exams-wrap{max-width:1160px;margin:0 auto}
-.pdf-hero{background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(240,180,41,.07));border:1px solid var(--border);border-radius:18px;padding:26px;margin-bottom:26px}
-.pdf-hero h3{font-family:"Playfair Display",serif;font-size:20px;color:var(--gold2);margin-bottom:5px}
-.pdf-hero p{color:var(--muted);font-size:12px;margin-bottom:18px}
-.pdf-actions{display:flex;gap:9px;flex-wrap:wrap}
-.pdf-btn-gold{background:linear-gradient(135deg,#b45309,var(--gold));color:#1a1000;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
-.pdf-btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,180,41,.3)}
-.pdf-action{background:var(--bg4);border:1px solid var(--border2);color:var(--muted);border-radius:9px;padding:9px 14px;cursor:pointer;font-size:12px;font-family:inherit;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
-.pdf-action:hover{border-color:var(--accent);color:var(--text)}
-.pdf-viewer{display:none;margin-top:14px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
-.pdf-viewer iframe{width:100%;height:700px;border:none;background:#fff}
-.exams-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:720px){.exams-grid{grid-template-columns:1fr}}
-.exam-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s}
-.exam-card:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,.25)}
-.exam-head{padding:20px;background:linear-gradient(135deg,var(--bg4),var(--bg3));display:flex;justify-content:space-between;align-items:flex-start}
-.exam-badge{background:var(--accent);color:#fff;border-radius:7px;padding:3px 9px;font-size:11px;font-weight:800}
-.exam-year{font-size:38px;font-weight:900;font-family:"JetBrains Mono",monospace;line-height:1}
-.exam-body{padding:17px 20px}
-.exam-stats{display:flex;gap:9px;margin-bottom:14px}
-.estat{background:var(--bg2);border-radius:7px;padding:7px 11px;text-align:center;flex:1}
-.estat-n{font-size:19px;font-weight:800;font-family:"JetBrains Mono",monospace}
-.estat-l{font-size:10px;color:var(--muted);margin-top:1px}
-.exam-hl{color:var(--muted);font-size:11px;line-height:1.5;margin-bottom:13px}
-.exam-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.exam-toggle{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:9px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all .2s}
-.exam-toggle:hover{border-color:var(--accent);color:var(--text)}
-.exam-qs{max-height:0;overflow:hidden;transition:max-height .5s ease}
-.exam-qs.open{max-height:5000px}
-.qitem{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-top:9px}
-.qitem-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;gap:6px;flex-wrap:wrap}
-.qnum{background:var(--bg4);color:var(--accent2);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;font-family:"JetBrains Mono",monospace}
-.qitem p{color:var(--muted);font-size:12px;line-height:1.55;margin-bottom:10px}
-.qopts{display:flex;flex-direction:column;gap:5px}
-.qopt{background:var(--bg3);border:1px solid var(--border);color:var(--dim);border-radius:6px;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:12px;line-height:1.4;text-align:left;transition:all .2s}
-.qopt:hover:not(:disabled){border-color:var(--accent)}
-.qopt.ok{background:rgba(34,197,94,.09);border-color:#22c55e;color:#86efac;font-weight:700}
-.qopt.err{background:rgba(239,68,68,.09);border-color:var(--red);color:#fca5a5;font-weight:700}
+/* Área de escrita */
+.essay-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.tipbox{
+  background:linear-gradient(135deg,rgba(124,92,252,.07),rgba(124,92,252,.03));
+  border:1px solid rgba(124,92,252,.18);border-radius:var(--r);
+  padding:15px 19px;margin-bottom:14px;font-size:13px;color:var(--sub);line-height:1.75;
+}
+.tipbox strong{color:var(--v2)}
+.comp5{
+  display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;
+  background:var(--ink3);border:1px solid var(--line);border-radius:var(--r2);padding:12px 16px;
+  align-items:center;
+}
+.ctag{
+  background:var(--ink4);border:1px solid var(--line2);
+  border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--dim);
+}
+.textwrap{position:relative}
+textarea{
+  width:100%;min-height:340px;
+  background:var(--ink3);border:1px solid var(--line2);
+  border-radius:var(--r);padding:22px 24px;
+  color:var(--txt);font-size:15px;line-height:1.85;
+  font-family:'Syne',sans-serif;resize:vertical;outline:none;
+  transition:border-color .2s;
+}
+textarea:focus{border-color:var(--v)}
+textarea::placeholder{color:var(--dim)}
+.essay-toolbar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:12px;flex-wrap:wrap;gap:12px;
+}
+.wc{font-size:12px;color:var(--sub);font-family:'DM Mono',monospace}
+.essay-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn-copy{
+  background:var(--ink4);border:1px solid var(--line2);color:var(--sub);
+  border-radius:8px;padding:9px 16px;cursor:pointer;font-family:'Syne',sans-serif;
+  font-size:12px;font-weight:700;transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-copy:hover{border-color:var(--cy);color:var(--cy)}
+.btn-pdf{
+  background:linear-gradient(135deg,#854d0e,var(--go));color:#1a0f00;border:none;
+  border-radius:8px;padding:9px 16px;cursor:pointer;font-family:'Syne',sans-serif;
+  font-size:12px;font-weight:800;transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-pdf:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(240,180,41,.35)}
+.copy-toast{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  background:var(--ok);color:#001a0a;
+  border-radius:10px;padding:12px 20px;font-size:13px;font-weight:700;
+  box-shadow:var(--sh2);transform:translateY(80px);opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;
+}
+.copy-toast.show{transform:translateY(0);opacity:1}
+
+/* Feedback IA */
+.efb{
+  margin-top:22px;
+  background:var(--ink2);border:1px solid rgba(124,92,252,.22);
+  border-radius:var(--r);padding:26px;
+}
+.efb-title{color:var(--v2);font-size:15px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:20px}
+@media(max-width:600px){.score-grid{grid-template-columns:repeat(2,1fr)}}
+.score-card{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r2);padding:12px;text-align:center;
+}
+.score-n{font-size:24px;font-weight:900;font-family:'DM Mono',monospace;color:var(--v2);line-height:1}
+.score-lbl{font-size:9px;color:var(--sub);margin-top:4px;line-height:1.4}
+.efb-text{font-size:13px;line-height:1.85;color:#c0b8d8;white-space:pre-wrap}
+.loading-dots{display:flex;gap:6px;justify-content:center;padding:28px;align-items:center}
+.loading-dots span{width:8px;height:8px;border-radius:50%;background:var(--v);animation:dot .9s ease-in-out infinite}
+.loading-dots span:nth-child(2){animation-delay:.15s;background:var(--v2)}
+.loading-dots span:nth-child(3){animation-delay:.3s;background:var(--go)}
+@keyframes dot{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* ══════════════════════════════════════════
+   PROVAS
+══════════════════════════════════════════ */
+.exams-wrap{max-width:1200px;margin:0 auto}
+.pdf-hero{
+  background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(240,180,41,.06));
+  border:1px solid var(--line2);border-radius:var(--r3);
+  padding:28px 32px;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.pdf-hero::before{
+  content:"UNESP";position:absolute;right:-10px;top:-20px;
+  font-family:'Instrument Serif',serif;font-size:120px;
+  color:rgba(255,255,255,.025);pointer-events:none;line-height:1;font-style:italic;
+}
+.pdf-h3{font-family:'Instrument Serif',serif;font-size:22px;color:var(--go2);margin-bottom:5px}
+.pdf-p{color:var(--sub);font-size:12px;line-height:1.6;margin-bottom:20px}
+.pdf-acts{display:flex;gap:9px;flex-wrap:wrap}
+.pdf-gold{
+  background:linear-gradient(135deg,#92400e,var(--go));color:#1a0e00;border:none;
+  border-radius:10px;padding:12px 22px;font-size:13px;font-weight:800;cursor:pointer;
+  font-family:'Syne',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:all .2s;
+}
+.pdf-gold:hover{transform:translateY(-1px);box-shadow:0 7px 24px rgba(240,180,41,.35)}
+.pdf-sec{
+  background:var(--ink4);border:1px solid var(--line2);color:var(--sub);
+  border-radius:9px;padding:10px 17px;cursor:pointer;font-family:'Syne',sans-serif;
+  font-size:12px;font-weight:700;transition:all .2s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.pdf-sec:hover{border-color:var(--v);color:var(--txt)}
+.pdf-viewer{display:none;margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid var(--line2)}
+.pdf-viewer iframe{width:100%;height:740px;border:none;background:#fff}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:768px){.egrid{grid-template-columns:1fr}}
+.exam-card{
+  background:var(--ink3);border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;transition:all .3s;
+}
+.exam-card:hover{border-color:var(--line2);box-shadow:var(--sh)}
+.exam-head{padding:22px;background:linear-gradient(135deg,var(--ink4),var(--ink3));display:flex;justify-content:space-between;align-items:flex-start}
+.ebadge{background:var(--v);color:#fff;border-radius:6px;padding:3px 10px;font-size:10px;font-weight:800;letter-spacing:.4px}
+.eyear{font-size:44px;font-weight:900;font-family:'DM Mono',monospace;line-height:1}
+.exam-body{padding:18px 22px}
+.estats{display:flex;gap:10px;margin-bottom:14px}
+.estat{background:var(--ink2);border-radius:8px;padding:8px 12px;text-align:center;flex:1}
+.estat-n{font-size:20px;font-weight:900;font-family:'DM Mono',monospace}
+.estat-l{font-size:10px;color:var(--sub);margin-top:1px}
+.exam-hl{color:var(--sub);font-size:11px;line-height:1.6;margin-bottom:13px}
+.etags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.etog{width:100%;background:var(--ink2);border:1px solid var(--line);color:var(--sub);border-radius:8px;padding:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;transition:all .2s}
+.etog:hover{border-color:var(--v);color:var(--txt)}
+.eqs{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.eqs.open{max-height:8000px}
+.qitem{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r2);padding:15px;margin-top:10px}
+.qitem-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.qnum{background:var(--ink4);color:var(--v2);border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace}
+.qitem p{color:var(--sub);font-size:13px;line-height:1.6;margin-bottom:11px}
+.qopts{display:flex;flex-direction:column;gap:6px}
+.qopt{background:var(--ink3);border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:9px 13px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;text-align:left;transition:all .2s;font-weight:600}
+.qopt:hover:not(:disabled){border-color:var(--v)}
+.qopt.ok{background:rgba(34,197,94,.09);border-color:var(--ok);color:#86efac;font-weight:700}
+.qopt.no{background:rgba(244,63,94,.09);border-color:var(--no);color:#fda4af;font-weight:700}
 .qopt:disabled{cursor:default}
-.qexp{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.18);border-radius:7px;padding:10px;margin-top:7px;font-size:11px;color:#86efac;line-height:1.55;display:none}
-.qexp.show{display:block}
+.qexp2{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.18);border-radius:7px;padding:11px;margin-top:8px;font-size:12px;color:#86efac;line-height:1.6;display:none}
+.qexp2.show{display:block}
 
-/* STATS */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:16px;text-align:center}
-.stat-num{font-size:34px;font-weight:900;font-family:"JetBrains Mono",monospace}
-.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px}
-.stat-sub{font-size:10px;color:var(--dim);margin-top:1px}
-.mat-row{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:13px 17px;display:flex;align-items:center;gap:14px;margin-bottom:9px}
-.prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex:1}
-.prog-fill{height:100%;border-radius:3px;transition:width .6s}
+/* ══════════════════════════════════════════
+   PROGRESSO
+══════════════════════════════════════════ */
+.stat-nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:28px}
+.sn{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:18px;text-align:center}
+.sn-num{font-size:36px;font-weight:900;font-family:'DM Mono',monospace;line-height:1}
+.sn-lbl{font-size:11px;color:var(--sub);margin-top:4px}
+.sn-sub{font-size:10px;color:var(--dim);margin-top:2px}
+.mat-list{display:flex;flex-direction:column;gap:9px}
+.mat-row{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:15px}
+.pbar{height:5px;background:var(--line2);border-radius:3px;overflow:hidden;flex:1}
+.pfill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1)}
 
-/* MISC */
-.section-title{font-family:"Playfair Display",serif;font-size:18px;color:var(--text);margin-bottom:3px}
-.section-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5}
-.progress-bar-top{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
-.pbt-item{display:flex;flex-direction:column;gap:1px}
-.pbt-label{font-size:10px;color:var(--muted);font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.4px}
-.pbt-val{font-size:18px;font-weight:800;font-family:"JetBrains Mono",monospace}
-.pbt-bar{flex:1;min-width:160px}
-.empty{text-align:center;padding:50px;color:var(--dim);font-size:14px}
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
 ::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--v)}
+
+/* ══════════════════════════════════════════
+   PRINT / PDF
+══════════════════════════════════════════ */
+@media print{
+  .hdr,.nav,.essay-toolbar,.essay-header,.tipbox,.comp5,
+  .btn,.btn-copy,.btn-pdf,.btn-out,.efb,.fbar{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  textarea{border:none!important;padding:0!important;font-size:12pt!important;line-height:1.8!important;height:auto!important;min-height:unset!important;color:#000!important;background:#fff!important;font-family:Georgia,serif!important}
+  .essay-wrap{max-width:100%!important;padding:20mm!important}
+  .print-header{display:block!important}
+}
+.print-header{display:none;border-bottom:2px solid #000;padding-bottom:12px;margin-bottom:24px}
+.print-header h2{font-size:18pt;font-family:Georgia,serif}
+.print-header p{font-size:10pt;color:#555;margin-top:4px}
+
+/* ══════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════ */
+@media(max-width:640px){
+  .hdr-pills{display:none}
+  .main{padding:20px 16px 60px}
+  .cgrid{grid-template-columns:1fr}
+  .etopics{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
 
+<!-- TOAST -->
+<div class="copy-toast" id="toast">✓ Texto copiado!</div>
+
 <header class="hdr">
   <div class="hdr-in">
-    <div class="logo">
-      <div class="logo-icon">📚</div>
+    <div class="brand">
+      <div class="brand-mark">📚</div>
       <div>
-        <div class="logo-name">UNESP Study Hub</div>
-        <div class="logo-tag">UNESP 2022 · FUVEST 2024 · ENEM</div>
+        <div class="brand-name">UNESP Study Hub</div>
+        <div class="brand-sub">Exatas & Humanidades · 2022</div>
       </div>
     </div>
-    <div class="hdr-stats">
-      <div class="stat-pill">Cards: <span id="stCards">0/0</span></div>
-      <div class="stat-pill">Quiz: <span id="stQuiz">0%</span></div>
-      <div class="stat-pill">Nível: <span id="stDiff">Todos</span></div>
+    <div class="hdr-pills">
+      <div class="pill">Cards: <b id="stCards">0/0</b></div>
+      <div class="pill">Quiz: <b id="stQuiz">0%</b></div>
+      <div class="pill">Nível: <b id="stDiff">Todos</b></div>
     </div>
   </div>
 </header>
 
 <nav class="nav">
   <div class="nav-in">
-    <button class="nav-btn active" onclick="goTab('flashcards')">🃏 Flashcards</button>
-    <button class="nav-btn" onclick="goTab('quiz')">🎯 Quiz</button>
-    <button class="nav-btn" onclick="goTab('essay')">✍️ Redação</button>
-    <button class="nav-btn" onclick="goTab('exams')">📄 Provas</button>
-    <button class="nav-btn" onclick="goTab('stats')">📊 Progresso</button>
+    <button class="nb on" onclick="goTab('flashcards')">🃏 Flashcards</button>
+    <button class="nb" onclick="goTab('quiz')">🎯 Quiz</button>
+    <button class="nb" onclick="goTab('essay')">✍️ Redação</button>
+    <button class="nb" onclick="goTab('exams')">📄 Provas</button>
+    <button class="nb" onclick="goTab('stats')">📊 Progresso</button>
   </div>
 </nav>
 
 <main class="main">
-  <div id="filters-area"></div>
+  <div id="farea"></div>
   <div class="tab active" id="tab-flashcards">
-    <div class="section-title">Flashcards de Revisão</div>
-    <div class="section-sub">Clique no card para revelar a resposta · Filtre por matéria e dificuldade</div>
-    <div id="fc-prog" style="display:none" class="progress-bar-top"></div>
-    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="sec-hd">
+      <div class="sec-title">Flashcards de Revisão</div>
+      <div class="sec-sub">Clique no card para revelar a resposta · Filtre por matéria e nível</div>
+    </div>
+    <div id="fcprog" class="prog-strip" style="display:none"></div>
+    <div class="cgrid" id="cgrid"></div>
   </div>
   <div class="tab" id="tab-quiz">
-    <div class="quiz-wrap" id="quizWrap"></div>
+    <div class="quiz-wrap" id="qwrap"></div>
   </div>
   <div class="tab" id="tab-essay">
-    <div class="essay-wrap" id="essayWrap"></div>
+    <div class="essay-wrap" id="ewrap"></div>
   </div>
   <div class="tab" id="tab-exams">
-    <div class="exams-wrap" id="examsWrap"></div>
+    <div class="exams-wrap" id="xwrap"></div>
   </div>
   <div class="tab" id="tab-stats">
-    <div id="statsWrap"></div>
+    <div id="swrap"></div>
   </div>
 </main>
 
 <script>
-const COLORS={Biologia:"#22c55e",Química:"#f0b429",Física:"#3b82f6",Matemática:"#8b5cf6",Geografia:"#10b981",História:"#ef4444",Literatura:"#ec4899",Filosofia:"#06b6d4",Redação:"#a855f7",Inglês:"#f97316"};
+// ══════════════════════════════════════════
+//  DADOS
+// ══════════════════════════════════════════
+const COR={Biologia:"#22c55e",Química:"#f0b429",Física:"#3b82f6",Matemática:"#8b5cf6",Geografia:"#10b981",História:"#ef4444",Literatura:"#ec4899",Filosofia:"#06b6d4",Redação:"#a855f7",Inglês:"#fb923c"};
 
 const CARDS=[
-  {id:1,s:"Biologia",d:1,q:"O que é G6PD e por que sua deficiência impede o uso de primaquina?",a:"G6PD protege eritrócitos do estresse oxidativo. Sem ela, a primaquina causa hemólise (destruição dos glóbulos vermelhos), podendo ser fatal para portadores."},
-  {id:2,s:"Biologia",d:2,q:"Quais são as 3 fases da dependência tecnológica em adolescentes?",a:"1) Engajamento: uso intenso e prazeroso; 2) Substituição: tecnologia substitui atividades reais; 3) Dependência: síndrome de abstinência sem o dispositivo — ansiedade, irritabilidade."},
-  {id:3,s:"Biologia",d:2,q:"Relação entre pressão e velocidade do sangue nos vasos sanguíneos.",a:"Inversamente proporcionais. Nos capilares: baixa velocidade (maior área total) + baixa pressão → troca de nutrientes. Nas artérias: alta pressão + alta velocidade."},
-  {id:4,s:"Biologia",d:1,q:"Como foi criada a almôndega de mamute em 2023?",a:"Gene da mioglobina do mamute sequenciado → partes ausentes preenchidas com DNA de elefante → gene inserido em célula-tronco de ovelha → células cultivadas em biorreator."},
-  {id:5,s:"Biologia",d:3,q:"Por que a radiação ionizante causa feridas que não cicatrizam?",a:"Mutações no DNA das células epiteliais alteram o ciclo celular → necrose ou transformação neoplásica. Células-tronco epidérmicas danificadas impedem renovação normal do tecido."},
-  {id:6,s:"Biologia",d:1,q:"Diferença fundamental entre mitose e meiose.",a:"Mitose: 1 divisão → 2 células idênticas diploides (2n). Meiose: 2 divisões → 4 células haploides (n). Meiose gera variabilidade genética por crossing-over."},
-  {id:7,s:"Biologia",d:2,q:"O que é fototropismo e qual hormônio o controla?",a:"Crescimento direcional em resposta à luz. Auxina (AIA) acumula-se no lado não iluminado → alongamento celular → curvatura em direção à luz. Experimento clássico de Darwin (1880)."},
-  {id:8,s:"Biologia",d:3,q:"Como funciona o feedback negativo na regulação da tireoide?",a:"Hipotálamo (TRH) → Hipófise (TSH) → Tireoide (T3/T4). Altos níveis de T3/T4 inibem hipotálamo e hipófise. Análogo ao termostato: produto final regula a própria produção."},
-  {id:9,s:"Biologia",d:2,q:"O que diferencia vírus de bactérias quanto ao tratamento?",a:"Vírus: sem metabolismo próprio, não respondem a antibióticos → antivirais e vacinas. Bactérias: procariotos com metabolismo → antibióticos. Penicilina não mata vírus!"},
-  {id:10,s:"Biologia",d:3,q:"O que é epistasia e como difere de dominância?",a:"Dominância: alelo mascara outro no mesmo locus. Epistasia: gene mascara outro gene em locus diferente. Ex.: genes da pelagem em cães — gene I mascara gene B (diferentes cromossomos)."},
-  {id:11,s:"Química",d:1,q:"Como se forma o ozônio troposférico (poluente)?",a:"NO₂ + luz UV → NO + O⁰; O⁰ + O₂ → O₃. É poluente: irrita vias respiratórias, danifica pulmões. Diferente do ozônio estratosférico, que nos protege da radiação UV."},
-  {id:12,s:"Química",d:1,q:"O que é o efeito fotoelétrico e por que foi revolucionário?",a:"Emissão de elétrons de metal iluminado. Depende da FREQUÊNCIA (não intensidade) da luz. Einstein explicou com fótons (E=hf) — base da mecânica quântica. Nobel 1921."},
-  {id:13,s:"Química",d:3,q:"Por que o pH pode ser negativo? A escala 0-14 tem limite físico?",a:"Não. pH = -log[H⁺]. Se [H⁺] > 1 mol/L (ácido muito concentrado) → pH < 0. A escala 0-14 é convencional para soluções diluídas. pH negativo existe em ácidos ultraconcentrados."},
-  {id:14,s:"Química",d:2,q:"Por que a Pt daria 'falso positivo' no teste de dissolução em ácido forte?",a:"Falso positivo = não se dissolve. E°(Pt) = +1,20V > E°(H⁺) = 0V → ácido não consegue oxidar a platina. Assim como ouro (E°=+1,50V). Ambos resistem a ácidos comuns."},
-  {id:15,s:"Química",d:2,q:"Pelo princípio de Le Chatelier, o que ocorre ao aumentar pressão num sistema com mais moles de gás nos produtos?",a:"Equilíbrio desloca para o lado com MENOS moles de gás (reagentes) para reduzir a pressão. Aumentar pressão nesse caso diminui a produção dos produtos."},
-  {id:16,s:"Química",d:1,q:"Diferença entre reação endotérmica e exotérmica.",a:"Exotérmica: libera calor (ΔH < 0). Ex.: combustão, respiração. Endotérmica: absorve calor (ΔH > 0). Ex.: fotossíntese, fusão do gelo. Aumentar T favorece a endotérmica (Le Chatelier)."},
-  {id:17,s:"Química",d:2,q:"Como calcular moles a partir da massa? Exemplo com 36g de água.",a:"n = m/M. M(H₂O) = 18 g/mol. n = 36/18 = 2 mol = 2 × 6,02×10²³ = 1,204×10²⁴ moléculas. Cada mol contém o número de Avogadro (6,02×10²³) de partículas."},
-  {id:18,s:"Química",d:3,q:"O que são compostos iônicos e por que têm alto ponto de fusão?",a:"Formados por cátions e ânions em rede cristalina (ex.: NaCl). Alto ponto de fusão porque forças eletrostáticas entre íons opostos são muito intensas — exigem muita energia para romper."},
-  {id:19,s:"Física",d:1,q:"Mistura café (80°C) + leite (20°C), proporção 1:1. Temperatura final?",a:"50°C. Equilíbrio térmico: Q_cedido = Q_absorvido. m·c·(80−T) = m·c·(T−20) → 80−T = T−20 → T = 50°C. Massas e calores específicos iguais → média aritmética."},
-  {id:20,s:"Física",d:2,q:"O que Newton concluiu sobre velocidade orbital?",a:"Para orbitar a Terra, projétil precisa de velocidade tangencial tal que sua queda livre curve ao redor do planeta. v = √(g·R) ≈ 7,9 km/s. Mais rápido → elipse/órbita. Mais lento → cai."},
-  {id:21,s:"Física",d:2,q:"No termômetro de óleo (M=18g, V=20cm³), quando a tensão no fio se anula?",a:"Quando Empuxo = Peso: ρ_óleo = M/V = 18/20 = 0,90 g/cm³. No gráfico densidade × temperatura do óleo, 0,90 g/cm³ corresponde a ≈ 100°C."},
-  {id:22,s:"Física",d:1,q:"Por que a fuligem desaparece das paredes do forno a lenha na temperatura ideal?",a:"Fuligem = carbono da combustão incompleta. Na temp. ideal: C + O₂ → CO₂. O carbono sólido é oxidado a gás, que escapa, revelando a cor clara da parede."},
-  {id:23,s:"Física",d:3,q:"O que é o efeito Doppler? Cite 2 aplicações práticas.",a:"Mudança de frequência percebida quando há movimento relativo entre fonte e observador. Aplicações: 1) Radar de velocidade (polícia); 2) Ecografia Doppler (fluxo sanguíneo); 3) Sonar marinho."},
-  {id:24,s:"Física",d:2,q:"Diferença entre calor latente e calor sensível.",a:"Sensível: Q = m·c·ΔT (muda temperatura). Latente: Q = m·L (muda fase, sem mudar temperatura). Ex.: gelo a 0°C absorve 80 cal/g (L_fusão) sem mudar de temperatura até fundir completamente."},
-  {id:25,s:"Física",d:3,q:"O que é inércia e como se relaciona com a 1ª Lei de Newton?",a:"Inércia: tendência de um corpo de manter seu estado de movimento. 1ª Lei: corpo em repouso → repouso; em MRU → MRU, a menos que uma força resultante não nula atue. Massa = medida da inércia."},
-  {id:26,s:"Matemática",d:2,q:"Diferença entre placas Mercosul e antigas no número de combinações.",a:"Mercosul: 26⁴ × 10³ (4ª posição é letra). Antigas: 26³ × 10⁴ (4ª é número). Razão: 26⁴×10³ / 26³×10⁴ = 26/10 = 2,6×. Mercosul tem 2,6 vezes mais combinações."},
-  {id:27,s:"Matemática",d:1,q:"O que são números oblongos e qual é a fórmula?",a:"Pontos em retângulo onde colunas = linhas + 1. Fórmula: O(n) = n(n+1). Sequência: 2, 6, 12, 20, 30... Relação: O(n) = 2·T(n), onde T(n) é o n-ésimo número triangular."},
-  {id:28,s:"Matemática",d:2,q:"O número 210 é triangular E oblongo? Prove.",a:"T(20) = 20×21/2 = 210 ✓ (triangular). O(14) = 14×15 = 210 ✓ (oblongo). Sim! Sempre T(n) = O(n)/2. O 20º triangular = metade do 14º oblongo."},
-  {id:29,s:"Matemática",d:3,q:"Converta 2021 para binário e compare quantidade de 1s e 0s.",a:"2021 = 1024+512+256+128+64+32+4+1 = 11111100101₂. Dígitos: 7 uns e 4 zeros. Diferença = 7−4 = 3 (mais 1s que 0s)."},
-  {id:30,s:"Matemática",d:1,q:"Como calcular probabilidade condicional P(A|B)?",a:"P(A|B) = P(A∩B) / P(B). Ex. UNESP Q88: P(pressão elevada | excesso de peso) = 0,10/0,25 = 40%. Renato tem excesso de peso → 40% de chance de pressão elevada."},
-  {id:31,s:"Matemática",d:3,q:"Qual é a fórmula do modelo exponencial de queda de preço (Q85 UNESP 2022)?",a:"y = 15649·e^(−0,687x). x = anos desde introdução (≈1990). Para 2025: x = 35. Usando e^5,053 = 156,49 e e^0,443 = 1,56: y = 15649/e^(0,687×35) ≈ US$64."},
-  {id:32,s:"Matemática",d:2,q:"Numa pirâmide com base AHGF (quadrado, área=3m²) e BCDE (retângulo, BC=3m, CD=4m), como calcular o volume?",a:"V_pirâmide = (1/3)·B·h. B_total = área do quadrado + área do retângulo = 3 + 12 = 15 m² (base composta). h = CD·tan(60°) = 4·√3 ≈ h. V = (1/3)·área·h."},
-  {id:33,s:"Geografia",d:1,q:"Por que o Canal de Suez é estratégico para o comércio mundial?",a:"Liga Mediterrâneo ao Mar Vermelho — evita contornar a África (≈7.000km a menos). Passa 12% do comércio mundial. Bloqueio em 2021 (Ever Given) = US$9,6 bi/dia de prejuízo."},
-  {id:34,s:"Geografia",d:2,q:"O que é a Serra do Imeri e por que favorece endemismo?",a:"Serra no norte do AM. Isolamento geográfico (montanhas + floresta) separa populações → especiação alopátrica. Espécies evoluem independentemente. Alta biodiversidade endêmica."},
-  {id:35,s:"Geografia",d:1,q:"O que é subsidência do terreno? Cite causa antrópica.",a:"Rebaixamento lento do solo. Causa antrópica: superexploração de aquíferos — retirada excessiva de água subterrânea cria vazios que colapsam. Ocorre em SP, Cidade do México e Jacarta."},
-  {id:36,s:"Geografia",d:2,q:"O que são Reservas Extrativistas e quem as idealizou?",a:"Criadas por Chico Mendes (1988). Permitem exploração sustentável dos recursos florestais pelas populações tradicionais (seringueiros). Conciliam preservação ambiental e geração de renda."},
-  {id:37,s:"Geografia",d:3,q:"O que é o meio técnico-científico-informacional (Milton Santos)?",a:"União entre ciência, técnica e informação no território a partir da globalização (anos 1970+). No Brasil: distribuição desigual — contínua no Sudeste/Sul; pontual (ilhas de modernidade) no Norte/Nordeste."},
-  {id:38,s:"História",d:1,q:"Quem foi Antonio Conselheiro e o que foi Canudos?",a:"Líder messiânico que fundou comunidade de Canudos (BA, 1893-97), reunindo ~30.000 pessoas pobres. Massacrado em 4 expedições militares. Euclides da Cunha narrou em 'Os Sertões' (1902)."},
-  {id:39,s:"História",d:2,q:"O que foi a Revolta dos Malês (1835) e o que a tornou única?",a:"Maior revolta urbana de escravizados das Américas. Salvador, BA. Liderada por escravizados muçulmanos alfabetizados em árabe. Planejada para o Ramadã. Reprimida: líderes mortos, deportados ou açoitados."},
-  {id:40,s:"História",d:1,q:"Como a Crise de 1929 transformou o liberalismo econômico?",a:"Evidenciou os limites do laissez-faire. Resultado: intervenção estatal obrigatória — New Deal de Roosevelt (EUA), políticas keynesianas (Europa). Estado passou a regular mercados e investir em infraestrutura."},
-  {id:41,s:"História",d:2,q:"O governo JK e o desenvolvimentismo: o que foi o Plano de Metas?",a:"'50 anos em cinco' — industrialização acelerada, captação de capital estrangeiro (indústria automobilística), construção de Brasília (1960). Gerou crescimento e inflação elevada."},
-  {id:42,s:"História",d:3,q:"O que a charge de Belmonte (1922) ironizava sobre a Semana de Arte Moderna?",a:"O descompasso entre as propostas renovadoras da vanguarda modernista e o gosto tradicional do público. A charge mostra o público olhando os artistas com pena: 'Coitados, não? Tão moços...'"},
-  {id:43,s:"História",d:2,q:"O que o texto de Proudhon ('A propriedade é o roubo') representa politicamente?",a:"Anarquismo: defende abolição da propriedade privada e do Estado. Proudhon (1840) equipara propriedade ao roubo porque se apropria do trabalho alheio sem compensação justa."},
-  {id:44,s:"História",d:3,q:"Qual foi o impacto demográfico da escravidão no Recôncavo Baiano?",a:"Escravizados chegaram a 75%+ da população. Taxa de crescimento negativo (mortes prematuras + baixa natalidade) → importação constante de africanos. Com fim do tráfico em 1850, acelerou-se a imigração europeia."},
-  {id:45,s:"Literatura",d:1,q:"'É tempo de formar novos quilombos' (Conceição Evaristo) — qual figura de linguagem?",a:"Metáfora: quilombos representam metaforicamente a união coletiva e resistência social contemporânea. Sem referência literal às comunidades históricas — sentido figurado/simbólico."},
-  {id:46,s:"Literatura",d:2,q:"Em 'Dois Irmãos' (Milton Hatoum), qual é o desfecho da rivalidade entre Yaqub e Omar?",a:"Desagregação e ruína da família. Os gêmeos (razão vs. paixão) destroem progressivamente os laços afetivos, materiais e morais. A família implode pela rivalidade fraternal."},
-  {id:47,s:"Literatura",d:2,q:"Para que serve a ambiguidade no diálogo do 'Macário' de Álvares de Azevedo?",a:"Efeito cômico. 'Burro' = animal e insulto. A Voz interpreta literalmente onde Macário usa figuradamente e vice-versa, gerando mal-entendidos progressivos — recurso de ambiguidade lexical."},
-  {id:48,s:"Literatura",d:1,q:"Qual movimento literário reage ao racionalismo iluminista valorizando a experiência individual?",a:"Romantismo (séc. XIX). Valorizava intuição, emoção, natureza e pátria. No Brasil: Gonçalves Dias, José de Alencar, Álvares de Azevedo (geração byroniana/mal do século)."},
-  {id:49,s:"Literatura",d:3,q:"O paradoxo no poema 'O Sobrevivente' de Drummond — como se resolve?",a:"O poema declara impossível escrever poesia no mundo mecanizado — mas o próprio texto é uma poesia. A contradição se dissolve: a poesia resiste ao negativismo do seu tempo pela própria existência."},
-  {id:50,s:"Filosofia",d:2,q:"O que é 'fortuna' em Maquiavel e como o príncipe deve lidar com ela?",a:"Fortuna = eventos imprevistos, o acaso. O príncipe virtuoso (com virtù) deve antecipar e adaptar-se. Maquiavel compara a fortuna a um rio — pode-se construir diques para controlar sua força."},
-  {id:51,s:"Filosofia",d:1,q:"O que é o panóptico e por que Foucault o usa como metáfora do poder?",a:"Prisão circular de Bentham: torre central vê todos, mas ninguém sabe se está sendo observado → auto-vigilância. Foucault: metáfora do poder disciplinar moderno (escolas, hospitais, fábricas)."},
-  {id:52,s:"Filosofia",d:3,q:"Qual é a crítica de Platão às artes em 'A República'?",a:"Artistas imitam o mundo sensível (já cópia do mundo das Ideias) → arte é 'cópia de cópia', distante da verdade. Artistas apelam às emoções, não à razão — corrompendo a alma do espectador."},
-  {id:53,s:"Redação",d:1,q:"Quais são as 5 competências do ENEM para redação?",a:"① Domínio da norma culta ② Compreensão e desenvolvimento do tema ③ Seleção e organização de argumentos ④ Mecanismos de coesão e coerência ⑤ Proposta de intervenção respeitando os DH"},
-  {id:54,s:"Redação",d:2,q:"O que deve ter uma proposta de intervenção completa no ENEM?",a:"5 elementos obrigatórios: Agente (quem age) + Ação (o que fazer) + Modo/Meio (como) + Efeito esperado (resultado) + Finalidade (por quê). Deve ser detalhada, viável e articulada com a tese."},
-  {id:55,s:"Redação",d:3,q:"O que diferencia a dissertação-argumentativa do texto expositivo?",a:"Dissertação-argumentativa: defende ponto de vista com argumentos para convencer. Expositivo: apresenta informações objetivamente sem tomar partido. O ENEM exige dissertação-argumentativa com proposta de intervenção social."},
-  {id:56,s:"Inglês",d:1,q:"O que significa 'keep pace' no contexto de urbanização?",a:"'Keep pace' = manter o ritmo, acompanhar. 'Infrastructure has been unable to keep pace' = a infraestrutura não conseguiu acompanhar o crescimento populacional. Análogo: 'manter o passo'."},
-  {id:57,s:"Inglês",d:2,q:"Diferença entre 'even though' e 'however' como conectores.",a:"'Even though' (embora): conjunção subordinativa de concessão, une duas orações. 'However' (porém/entretanto): advérbio de contraste, liga ideias em orações separadas. Não são intercambiáveis sintaticamente."},
+  {id:1,s:"Biologia",d:1,q:"O que é G6PD e por que sua deficiência impede uso de primaquina?",a:"G6PD protege eritrócitos do estresse oxidativo. Sem ela, a primaquina causa hemólise (destruição dos glóbulos vermelhos), podendo ser fatal. Portadores precisam de antimaláricos alternativos."},
+  {id:2,s:"Biologia",d:2,q:"Quais são as 3 fases da dependência tecnológica em adolescentes?",a:"① Engajamento: uso intenso e prazeroso; ② Substituição: tecnologia substitui atividades reais; ③ Dependência: síndrome de abstinência sem o dispositivo — ansiedade, irritabilidade, insônia."},
+  {id:3,s:"Biologia",d:2,q:"Relação entre pressão e velocidade do sangue nos vasos.",a:"Inversamente proporcionais. Capilares: baixa velocidade (maior área total) + baixa pressão → troca de nutrientes. Artérias: alta pressão + alta velocidade. Veias: baixa pressão, retorno por músculos e válvulas."},
+  {id:4,s:"Biologia",d:1,q:"Como foi criada a almôndega de mamute em 2023?",a:"Gene da mioglobina do mamute sequenciado → partes ausentes preenchidas com DNA de elefante africano → gene inserido em célula-tronco de ovelha → células multiplicadas em biorreator por 3 semanas."},
+  {id:5,s:"Biologia",d:3,q:"Por que a radiação ionizante causa feridas que não cicatrizam?",a:"Mutações no DNA das células epiteliais alteram o ciclo celular → necrose ou transformação neoplásica. Células-tronco epidérmicas também danificadas impedem renovação normal. Limiar de dose acima de 6 Gy causa síndrome cutânea por radiação."},
+  {id:6,s:"Biologia",d:1,q:"Diferença fundamental entre mitose e meiose.",a:"Mitose: 1 divisão → 2 células idênticas diploides (2n). Crescimento e reparação. Meiose: 2 divisões → 4 células haploides (n). Formação de gametas. Gera variabilidade genética por crossing-over."},
+  {id:7,s:"Biologia",d:2,q:"O que é fototropismo e qual hormônio o controla?",a:"Crescimento direcional em resposta à luz. Auxina (AIA) acumula-se no lado não iluminado → alongamento celular → curvatura em direção à luz. Demonstrado por Darwin em 1880 com coleóptiles de aveia."},
+  {id:8,s:"Biologia",d:3,q:"Como funciona o feedback negativo na regulação da tireoide?",a:"Hipotálamo libera TRH → Hipófise libera TSH → Tireoide produz T3/T4. Altos níveis de T3/T4 inibem hipotálamo e hipófise. Análogo a um termostato: produto final regula sua própria síntese."},
+  {id:9,s:"Biologia",d:2,q:"O que diferencia vírus de bactérias no tratamento?",a:"Vírus: sem metabolismo próprio, não respondem a antibióticos → antivirais e vacinas. Bactérias: procariotos com metabolismo próprio → antibióticos (ex: penicilina inibe síntese de parede celular). Gripes são virais — antibióticos não funcionam!"},
+  {id:10,s:"Biologia",d:3,q:"O que é epistasia e como difere de dominância?",a:"Dominância: alelo mascara outro no mesmo locus (mesmo gene). Epistasia: gene mascara outro gene em locus diferente (genes distintos). Ex.: gene I em cães mascara gene B — interação entre loci diferentes no genoma."},
+  {id:11,s:"Química",d:1,q:"Como se forma o ozônio troposférico (poluente)?",a:"NO₂ + luz UV → NO + O·; O· + O₂ → O₃. Poluente: irrita vias respiratórias, danifica tecido pulmonar. Diferente do ozônio estratosférico, que nos protege da UV. Origem: combustão de veículos."},
+  {id:12,s:"Química",d:1,q:"O que é o efeito fotoelétrico e por que foi revolucionário?",a:"Emissão de elétrons de metal iluminado. Depende da FREQUÊNCIA (não intensidade) da luz. Einstein explicou com fótons (E=hf) em 1905 — base da mecânica quântica. Lhe rendeu o Nobel de 1921."},
+  {id:13,s:"Química",d:3,q:"Por que o pH pode ser negativo? A escala 0-14 tem limite?",a:"Não tem limite físico. pH = −log[H⁺]. Se [H⁺] > 1 mol/L (ácido concentrado), pH < 0. A escala 0-14 é apenas convencional para soluções diluídas (≈25°C). pH de ácido sulfúrico concentrado ≈ −1,5."},
+  {id:14,s:"Química",d:2,q:"Por que a Pt daria 'falso positivo' no teste de dissolução em ácido?",a:"E°(Pt) = +1,20V > E°(H⁺) = 0V. Como o ácido precisaria oxidar a platina, mas não tem potencial suficiente, ela não se dissolve. Falso positivo = não reage, como o ouro (E°=+1,50V). Só água régia dissolve."},
+  {id:15,s:"Química",d:2,q:"Princípio de Le Chatelier: aumento de pressão com mais moles nos produtos.",a:"Equilíbrio desloca para o lado com MENOS moles de gás (reagentes), reduzindo a pressão. Ex.: N₂ + 3H₂ ⇌ 2NH₃ — pressão alta favorece NH₃ (2 moles < 4 moles). Base do processo Haber."},
+  {id:16,s:"Química",d:1,q:"Diferença entre endotérmica e exotérmica. Exemplos.",a:"Exotérmica: libera calor (ΔH < 0). Ex.: combustão, respiração celular, fotossíntese?? não! Endotérmica: absorve calor (ΔH > 0). Ex.: fotossíntese, fusão do gelo, cozimento do pão. Elevar T favorece a endotérmica (Le Chatelier)."},
+  {id:17,s:"Química",d:2,q:"Como calcular moles? Exemplo com 36g de água.",a:"n = m/M. M(H₂O) = 2×1 + 16 = 18 g/mol. n = 36/18 = 2 mol. 2 mol = 2 × 6,02×10²³ = 1,204×10²⁴ moléculas. Cada mol contém o número de Avogadro de partículas."},
+  {id:18,s:"Química",d:3,q:"Por que compostos iônicos têm alto ponto de fusão?",a:"Formados por cátions e ânions em rede cristalina (ex.: NaCl). Forças eletrostáticas entre íons opostos são muito intensas e omnidirecionais. Exigem muita energia para romper — pf NaCl = 801°C."},
+  {id:19,s:"Física",d:1,q:"Mistura café (80°C) + leite (20°C), proporção 1:1. Temperatura final?",a:"50°C. Equilíbrio térmico: m·c·(80−T) = m·c·(T−20). Massas e calores específicos iguais → T = (80+20)/2 = 50°C. Se as massas fossem diferentes, não seria a média simples!"},
+  {id:20,s:"Física",d:2,q:"O que Newton descobriu sobre velocidade orbital e gravidade?",a:"Para orbitar a Terra, projétil precisa de velocidade tangencial v = √(g·R) ≈ 7,9 km/s. Nessa velocidade, a queda livre curva ao redor do planeta. Acima disso: elipse/escape. Abaixo: cai. Concebeu isso em Woolsthorpe (1666)."},
+  {id:21,s:"Física",d:2,q:"No termômetro de óleo (M=18g, V=20cm³), quando a tensão no fio se anula?",a:"Quando Empuxo = Peso: ρ_óleo × V × g = M × g → ρ_óleo = 18/20 = 0,90 g/cm³. Pelo gráfico densidade × temperatura, 0,90 g/cm³ corresponde a ≈100°C. Nessa temperatura o objeto flutua sem tensão."},
+  {id:22,s:"Física",d:1,q:"Por que a fuligem desaparece das paredes do forno na temperatura ideal?",a:"Fuligem = carbono da combustão incompleta. Na temperatura ideal: C + O₂ → CO₂(g). O carbono sólido é oxidado a gás que escapa, revelando a cor clara. Temperatura ideal = combustão completa."},
+  {id:23,s:"Física",d:3,q:"O que é o efeito Doppler? Cite 3 aplicações.",a:"Variação de frequência percebida com movimento relativo fonte-observador. Aplicações: ① Radar de velocidade (polícia); ② Ecografia Doppler (fluxo sanguíneo); ③ Sonar; ④ Medição de velocidade de estrelas (desvio para vermelho)."},
+  {id:24,s:"Física",d:2,q:"Diferença entre calor latente e calor sensível.",a:"Sensível: Q = m·c·ΔT — muda temperatura, não muda fase. Latente: Q = m·L — muda fase sem alterar temperatura. Ex.: gelo a 0°C absorve L_fusão = 80 cal/g até fundir completamente, sem variar para 1°C."},
+  {id:25,s:"Física",d:3,q:"Inércia e 1ª Lei de Newton — qual a diferença entre elas?",a:"A 1ª Lei é a LEI: corpo sem força resultante permanece em repouso ou MRU. A inércia é a PROPRIEDADE que descreve esse comportamento — resistência à mudança de estado. A massa é a medida quantitativa da inércia."},
+  {id:26,s:"Matemática",d:2,q:"Diferença de combinações entre placas Mercosul e antigas.",a:"Mercosul: 3 letras + 1 número + 3 letras → 26³×10×26³ = 26⁶×10. Antiga: 3 letras + 4 números → 26³×10⁴. Razão = 26³/10³ ≈ 17,6×. Mercosul tem muito mais combinações pela letra na 5ª posição."},
+  {id:27,s:"Matemática",d:1,q:"O que são números oblongos e qual é a fórmula?",a:"Pontos arranjos em retângulo onde colunas = linhas + 1. Fórmula: O(n) = n(n+1). Sequência: 2, 6, 12, 20, 30, 42... Sempre o dobro do triangular correspondente: O(n) = 2·T(n)."},
+  {id:28,s:"Matemática",d:2,q:"Prove que 210 é triangular E oblongo.",a:"T(20) = 20×21/2 = 210 ✓. O(14) = 14×15 = 210 ✓. Sim! É os dois. Não é coincidência: sempre que T(n) = O(m), vale O(m) = 2·T(n), então T(n) = T(n). Os pares (n,m) satisfazem a equação de Pell."},
+  {id:29,s:"Matemática",d:3,q:"Converta 2021 para binário e compare os dígitos 1 e 0.",a:"2021÷2 até 0: 2021=11111100101₂. Verificação: 1024+512+256+128+64+32+4+1=2021 ✓. Dígitos: sete 1s e quatro 0s. Diferença = 7−4 = 3."},
+  {id:30,s:"Matemática",d:1,q:"Como calcular probabilidade condicional? Exemplo UNESP Q88.",a:"P(A|B) = P(A∩B)/P(B). Q88: P(pressão elevada | excesso de peso) = P(elevada ∩ excesso)/P(excesso) = 0,10/0,25 = 40%. Renato, com excesso de peso, tem 40% de chance de pressão elevada."},
+  {id:31,s:"Matemática",d:3,q:"Modelo exponencial de preço de baterias (Q85 UNESP 2022).",a:"y = 15649·e^(−0,687x), x = anos desde introdução. Para 2020: x=5,053 → y = 15649/e^3,47 ≈ 100. Para 2021: x=5,053+0,443 → y = 100/e^0,443 = 100/1,56 ≈ US$64. A função modela decrescimento exponencial."},
+  {id:32,s:"Matemática",d:2,q:"Fórmula e propriedade-chave dos números triangulares.",a:"T(n) = n(n+1)/2. T(1)=1, T(2)=3, T(3)=6... Propriedade: T(n)−T(n−1)=n. Relação com oblongos: O(n)=2T(n). Somas de PA de razão 1 a partir de 1. T(10)=55, T(20)=210, T(100)=5050 (Gauss!)."},
+  {id:33,s:"Geografia",d:1,q:"Por que o Canal de Suez é estratégico para o comércio mundial?",a:"Liga Mediterrâneo ao Mar Vermelho — evita contornar a África (≈7.000km a menos, 9 dias). Passa 12% do comércio mundial e 30% dos contêineres. Bloqueio de 2021 (Ever Given 6 dias) = US$9,6 bi/dia."},
+  {id:34,s:"Geografia",d:2,q:"O que é a Serra do Imeri e por que favorece endemismo?",a:"Serra vulcânica no norte do AM, na fronteira com Venezuela. Isolamento geográfico duplo (montanhas + floresta) separa populações → especiação alopátrica. Espécies evoluem independentemente. Altíssimo endemismo vegetal e de anfíbios."},
+  {id:35,s:"Geografia",d:1,q:"O que é subsidência do terreno? Causa antrópica.",a:"Rebaixamento lento e gradual do solo. Causa antrópica principal: superexploração de aquíferos (retirada de água cria vazios que colapsam). Cidade do México afunda 9cm/ano; Jacarta afundou 4m em 30 anos."},
+  {id:36,s:"Geografia",d:2,q:"Reservas Extrativistas: origem, criador e objetivo.",a:"Criadas por Chico Mendes (1988), assassinado em dezembro daquele ano. Permitem exploração sustentável dos recursos florestais por populações tradicionais (seringueiros, ribeirinhos, castanheiros). Conciliam conservação e renda."},
+  {id:37,s:"Geografia",d:3,q:"Meio técnico-científico-informacional de Milton Santos.",a:"Época atual da globalização (anos 1970+): ciência, técnica e informação fundem-se no território. No Brasil: distribuição radicalmente desigual — contínua no Centro-Sul; pontual (ilhas de modernidade) no Norte e Nordeste."},
+  {id:38,s:"História",d:1,q:"Quem foi Antonio Conselheiro e o que foi Canudos?",a:"Líder messiânico que fundou a comunidade de Canudos (BA, 1893-97), reunindo ~30.000 pessoas marginalizadas. Destruída em 4 expedições militares da recém-proclamada República. Euclides da Cunha narrou em 'Os Sertões' (1902)."},
+  {id:39,s:"História",d:2,q:"Revolta dos Malês (1835): o que foi e por que é única?",a:"Maior revolta urbana de escravizados das Américas. Salvador, BA, janeiro de 1835. Liderada por escravizados muçulmanos (os Malês) alfabetizados em árabe — organização sofisticada e sem precedentes. Planejada para o fim do Ramadã. Reprimida: morte, deportação, açoite."},
+  {id:40,s:"História",d:1,q:"Como a Crise de 1929 transformou o liberalismo econômico?",a:"Evidenciou os limites do laissez-faire. Resultado: intervenção estatal obrigatória — New Deal de Roosevelt nos EUA, políticas keynesianas na Europa. Estado passou a regular mercados, investir em infraestrutura e garantir empregos."},
+  {id:41,s:"História",d:2,q:"Governo JK e o Plano de Metas — o que foi e qual impacto?",a:"'50 anos em 5': industrialização acelerada com captação de capital estrangeiro (indústria automobilística), energia (Furnas, Paulo Afonso) e construção de Brasília (1960). Resultado: crescimento acelerado + inflação alta + dívida externa."},
+  {id:42,s:"História",d:3,q:"O que a charge de Belmonte ironizava sobre a Semana de Arte Moderna de 1922?",a:"O descompasso entre vanguarda e gosto do público burguês. A charge mostra o público olhando os artistas com pena: 'Coitados, não? Tão moços...' — ironia de que quem não entendia a renovação eram os espectadores conservadores, não os artistas."},
+  {id:43,s:"História",d:2,q:"O que o texto de Proudhon representa politicamente?",a:"'A propriedade é o roubo' (1840) é marco do Anarquismo. Defende abolição da propriedade privada e do Estado. Proudhon argumenta que propriedade se apropria do trabalho alheio sem justa compensação, sendo, portanto, equivalente ao roubo."},
+  {id:44,s:"História",d:3,q:"Impacto demográfico da escravidão no Recôncavo Baiano.",a:"Escravizados chegaram a 75%+ da população local. Taxa de crescimento vegetativo negativo (mortes prematuras + baixa natalidade) exigia importação constante de africanos. Com o fim do tráfico em 1850, acelerou-se a imigração europeia para suprir a demanda."},
+  {id:45,s:"Literatura",d:1,q:"'É tempo de formar novos quilombos' (Conceição Evaristo) — que figura de linguagem?",a:"Metáfora. Os quilombos representam metaforicamente a resistência e união coletiva contemporânea. Sem referência literal às comunidades históricas — o sentido é figurado. A poesia transforma um símbolo histórico em chamado atual."},
+  {id:46,s:"Literatura",d:2,q:"Em 'Dois Irmãos' (Hatoum), qual é o resultado da rivalidade Yaqub × Omar?",a:"Desagregação total da família. Os gêmeos — razão calculista (Yaqub) vs. paixão destrutiva (Omar) — destroem progressivamente os laços afetivos, materiais e morais. A narradora Domingas e seu filho Nael são testemunhas da ruína."},
+  {id:47,s:"Literatura",d:2,q:"Qual recurso produz efeito cômico no diálogo do burro no 'Macário'?",a:"Ambiguidade lexical. 'Burro' = animal de montaria E insulto. A Voz interpreta literalmente onde Macário usa figuradamente e vice-versa — gerando série de mal-entendidos progressivos e absurdos que beiram o teatro do absurdo."},
+  {id:48,s:"Literatura",d:1,q:"Qual movimento reage ao iluminismo valorizando 'o valor supremo da experiência individual'?",a:"Romantismo (séc. XIX). Valorizava intuição, emoção, natureza, nação e pátria. No Brasil: Gonçalves Dias (indianismo), José de Alencar (prosa), Álvares de Azevedo (geração byroniana/mal do século)."},
+  {id:49,s:"Literatura",d:3,q:"O paradoxo em 'O Sobrevivente' de Drummond — como se resolve?",a:"O poema declara impossível escrever poesia no mundo mecanizado e violento — mas o próprio texto é uma poesia existente. Contradição que se resolve: a poesia sobrevive ao ato de declarar sua impossibilidade. O negativo se transforma em ato afirmativo."},
+  {id:50,s:"Filosofia",d:2,q:"O que é 'fortuna' em Maquiavel e como o príncipe deve lidar com ela?",a:"Fortuna = acaso, eventos imprevistos, sorte. O príncipe com virtù (habilidade política) deve antecipar e adaptar-se à fortuna. Maquiavel: a fortuna domina metade dos eventos — o homem virtuoso pode dominar a outra metade. Analogia: construir diques antes da cheia."},
+  {id:51,s:"Filosofia",d:1,q:"O que é o panóptico e por que Foucault o usa como metáfora do poder moderno?",a:"Prisão circular de Bentham (1791): torre central vê todos, ninguém sabe se está sendo observado → auto-vigilância permanente. Foucault em 'Vigiar e Punir': metáfora do poder disciplinar moderno que se replica em escolas, hospitais, fábricas, escritórios."},
+  {id:52,s:"Filosofia",d:3,q:"Crítica de Platão às artes em 'A República'.",a:"Artistas imitam o mundo sensível (já cópia imperfeita do mundo das Ideias) → arte é 'cópia de cópia', três níveis abaixo da verdade. Artistas apelam às emoções, contornando a razão → corrompem a alma. Por isso Platão expulsaria poetas da cidade ideal."},
+  {id:53,s:"Redação",d:1,q:"Quais são as 5 competências do ENEM para redação?",a:"① Domínio da norma culta; ② Compreensão e desenvolvimento do tema; ③ Seleção e organização de argumentos; ④ Mecanismos de coesão e coerência; ⑤ Proposta de intervenção respeitando os Direitos Humanos."},
+  {id:54,s:"Redação",d:2,q:"O que deve ter uma proposta de intervenção completa?",a:"5 elementos obrigatórios: Agente (quem age) + Ação (o que fazer) + Modo/Meio (como fazer) + Efeito esperado + Finalidade (para quê). Deve ser detalhada, viável, articulada com a tese e não violar direitos humanos."},
+  {id:55,s:"Redação",d:3,q:"O que diferencia dissertação-argumentativa de texto expositivo?",a:"Dissertação-argumentativa: defende ponto de vista com argumentos para convencer o leitor. Expositivo: apresenta informações objetivamente sem tomar partido. O ENEM exige dissertação-argumentativa com proposta de intervenção social — não basta informar!"},
+  {id:56,s:"Inglês",d:1,q:"O que significa 'keep pace' no contexto de urbanização?",a:"'Keep pace' = manter o ritmo, acompanhar o passo. 'Infrastructure has been unable to keep pace' = a infraestrutura não conseguiu acompanhar o crescimento populacional. Expressão idiomática frequente em textos formais ingleses."},
+  {id:57,s:"Inglês",d:2,q:"Diferença entre 'even though' e 'however' como conectores.",a:"'Even though' (embora): conjunção subordinativa de concessão — obrigatoriamente une duas orações. 'However' (porém/entretanto): advérbio de contraste — liga ideias em orações separadas ou após ponto e vírgula. Não são sintaticamente intercambiáveis."},
 ];
 
 const QUIZ=[
-  {id:1,s:"Física",d:1,q:"Uma maçã cai de altura h. Sua energia cinética ao atingir o solo é:",opts:["mgh/2","mgh","2mgh","√(2gh)"],ok:1,exp:"Conservação de energia: toda E. potencial (mgh) → E. cinética. Ec = mgh.",src:"UNESP 2022"},
-  {id:2,s:"Biologia",d:1,q:"A técnica de inserir gene de outra espécie em um organismo chama-se:",opts:["Clonagem","Terapia gênica","Transgenia","Seleção artificial"],ok:2,exp:"Transgenia = inserção de gene de outra espécie. Ex.: gene da insulina humana em E. coli.",src:"UNESP 2022 Q63"},
-  {id:3,s:"História",d:1,q:"A Revolta dos Malês (1835) se distingue por:",opts:["Ter ocorrido no campo","Ser liderada por escravizados alfabetizados em árabe","Ter sido bem-sucedida","Ter apoio de fazendeiros"],ok:1,exp:"Os Malês eram escravizados muçulmanos que dominavam a escrita em árabe — organização sofisticada e única.",src:"UNESP 2022"},
-  {id:4,s:"Literatura",d:1,q:"O movimento que defende 'o valor supremo da experiência individual' reagindo ao iluminismo é:",opts:["Naturalismo","Realismo","Barroco","Romantismo"],ok:3,exp:"O Romantismo (séc. XIX) valorizava intuição, emoção, natureza e pátria, contra o racionalismo iluminista.",src:"UNESP 2022 Q15"},
-  {id:5,s:"Inglês",d:1,q:"'Keep pace' (texto sobre Water and Urbanization) significa:",opts:["Antecipar necessidades","Manter o ritmo de progresso","Avaliar a situação","Interferir no desenvolvimento"],ok:1,exp:"'Keep pace' = manter o ritmo. A infraestrutura não conseguiu acompanhar o crescimento urbano.",src:"UNESP 2022 Q26"},
-  {id:6,s:"Química",d:1,q:"O efeito fotoelétrico depende principalmente de:",opts:["Intensidade da luz","Frequência da luz","Massa dos elétrons","Temperatura do metal"],ok:1,exp:"Einstein: emissão de elétrons depende da FREQUÊNCIA (E=hf), não da intensidade. Base da mecânica quântica.",src:"UNESP 2022"},
-  {id:7,s:"Matemática",d:2,q:"O número 210 em relação a triangulares T(n)=n(n+1)/2 e oblongos O(n)=n(n+1):",opts:["Apenas triangular T(20)","Apenas oblongo O(14)","Triangular E oblongo","Nenhum dos dois"],ok:2,exp:"T(20)=210 ✓ e O(14)=210 ✓. 210 é ambos! Relação: O(n) = 2·T(n) sempre.",src:"UNESP 2022 Q85"},
-  {id:8,s:"Biologia",d:2,q:"No experimento hemácias + algas em água destilada: após centrifugação, ao microscópio observa-se:",opts:["Só hemácias; solução com clorofila","Só algas; solução com hemoglobina","Ambas as células; sem moléculas","Nenhuma célula; ambas as moléculas"],ok:1,exp:"Hemácias: sem parede celular → lise osmótica → hemoglobina na solução. Algas: parede celular rígida → sobrevivem → íntegras no precipitado.",src:"UNESP 2022 Q64"},
-  {id:9,s:"Química",d:2,q:"No teste do ouro com ácido forte, qual material daria falso positivo (não se dissolve)?",opts:["Mg (E°= -2,37V)","Al (E°= -1,66V)","Fe (E°= -0,44V)","Pt (E°= +1,20V)"],ok:3,exp:"Falso positivo = não se dissolve. E°(Pt)=+1,20V > E°(H⁺)=0V → não oxidada pelo ácido, como o ouro (+1,50V).",src:"UNESP 2022"},
-  {id:10,s:"História",d:2,q:"A charge de Belmonte sobre a Semana de Arte Moderna ironiza:",opts:["O atraso da arte brasileira","Preocupações com cultura popular","O descompasso entre vanguarda e gosto do público","A formação técnica dos artistas"],ok:2,exp:"O público olha os artistas com pena ('Coitados, não?'), ironizando que a renovação modernista não era compreendida.",src:"UNESP 2022 Q40"},
-  {id:11,s:"Física",d:2,q:"600g água 10°C + 100g gelo -40°C + 800g água 5°C em calorímetro ideal. Resultado:",opts:["1500g água a 10°C","1450g água + 50g gelo a 0°C","1500g gelo a -5°C","1500g água a 0°C"],ok:3,exp:"Q cedido pela água = 6000+4000=10000 cal. Q p/ aquecer gelo a 0°C=2000 cal; fundir todo=8000 cal. Total=10000 cal. Equilíbrio: 1500g água a 0°C.",src:"UNESP 2022 Q79"},
-  {id:12,s:"Literatura",d:2,q:"No 'Macário', o recurso que gera efeito cômico no diálogo do burro é:",opts:["Antítese","Eufemismo","Hipérbole","Ambiguidade"],ok:3,exp:"'Burro' = animal e insulto. A Voz interpreta literalmente onde Macário usa figuradamente — ambiguidade lexical.",src:"UNESP 2022 Q04"},
-  {id:13,s:"Biologia",d:3,q:"23 nomes populares de aves — taxonomicamente pode-se afirmar que:",opts:["Pertencem a 23 gêneros","Pertencem a 1 único gênero","23 espécies em 1 gênero","1 classe, sem inferir nº de gêneros"],ok:3,exp:"Sendo todas aves = mesma classe (Aves). Nomes populares ≠ taxonomia formal. Não se infere nº de gêneros sem nomenclatura científica.",src:"UNESP 2022 Q61"},
-  {id:14,s:"Química",d:3,q:"SiO₂ + 3C → SiC + 2CO (rendimento 75%). Reação de 6t SiO₂ com 3,6t C. Massa de SiC obtida:",opts:["5,6t","4,0t","3,0t","2,5t"],ok:2,exp:"M(SiO₂)=60g/mol, M(C)=12g/mol, M(SiC)=40g/mol. Mol SiO₂=6t/60=0,1 Mmol; C precisa 3× SiO₂=0,3 Mmol, temos 3,6t/12=0,3 Mmol. Estequiometria ok. SiC teórico=4t × 0,75=3t.",src:"UNESP 2022 Q70"},
-  {id:15,s:"Física",d:3,q:"Força gravitacional entre exoplaneta 2M1207b (5×M_Júpiter) e estrela (0,025×M_Sol) a 40 UA:",opts:["8,3×10²⁰ N","5,0×10²⁰ N","2,5×10²¹ N","3,6×10²¹ N"],ok:0,exp:"F=Gm₁m₂/r². m₁=10²⁸kg; m₂=5×10²⁸kg; r=6×10¹²m. F=6×10⁻¹¹×10²⁸×5×10²⁸/(6×10¹²)²=3×10¹⁸/3,6×10²⁵≈8,3×10²⁰N.",src:"UNESP 2022 Q77"},
-  {id:16,s:"Matemática",d:3,q:"Probabilidade de Renato (excesso de peso) ter pressão elevada (tabela Q88):",opts:["12%","4%","50%","40%"],ok:3,exp:"P(elevada|excesso) = P(elevada∩excesso)/P(excesso) = 10%/25% = 40%. Probabilidade condicional!",src:"UNESP 2022 Q88"},
-  {id:17,s:"Filosofia",d:2,q:"Norbert Elias afirma que a morte é 'problema dos vivos' porque:",opts:["Apenas humanos antecipam a própria morte","Os mortos deixam dívidas","A morte é imprevisível","Os animais também morrem"],ok:0,exp:"Apenas humanos sabem que morrerão e tomam precauções. Os mortos não têm problemas — é quem vive que sofre com a perspectiva da finitude.",src:"UNESP 2022 Q11"},
-  {id:18,s:"Biologia",d:2,q:"Hormônio vegetal que controla o fototropismo em plantas:",opts:["Giberilina","Citocinina","Etileno","Auxina (AIA)"],ok:3,exp:"Auxina acumula-se no lado não iluminado → promove alongamento celular → curvatura em direção à luz. Experimento de Darwin (1880).",src:"UNESP 2022 Q66"},
+  {id:1,s:"Física",d:1,q:"Maçã cai de altura h. Energia cinética ao atingir o solo:",opts:["mgh/2","mgh","2mgh","√(2gh)"],ok:1,exp:"Conservação de energia: E. potencial (mgh) converte-se integralmente em E. cinética. Ec = mgh.",src:"UNESP 2022"},
+  {id:2,s:"Biologia",d:1,q:"Inserção de gene de outra espécie em um organismo chama-se:",opts:["Clonagem","Terapia gênica","Transgenia","Seleção artificial"],ok:2,exp:"Transgenia = inserção de gene de outra espécie. Ex.: gene da insulina humana em E. coli produz insulina para diabéticos.",src:"UNESP 2022 Q63"},
+  {id:3,s:"História",d:1,q:"Revolta dos Malês (1835) distingue-se por:",opts:["Ter ocorrido no campo","Ser liderada por escravizados alfabetizados em árabe","Ter sido bem-sucedida","Ter apoio de fazendeiros"],ok:1,exp:"Os Malês eram escravizados muçulmanos que dominavam a escrita em árabe — organização única nas Américas.",src:"UNESP 2022"},
+  {id:4,s:"Literatura",d:1,q:"Movimento que defende 'o valor supremo da experiência individual' contra o iluminismo:",opts:["Naturalismo","Realismo","Barroco","Romantismo"],ok:3,exp:"Romantismo (séc. XIX): intuição, emoção, natureza e pátria em contraposição ao racionalismo iluminista.",src:"UNESP 2022 Q15"},
+  {id:5,s:"Inglês",d:1,q:"'Keep pace' (Water and Urbanization) significa:",opts:["Antecipar necessidades","Manter o ritmo de progresso","Avaliar a situação","Interferir no desenvolvimento"],ok:1,exp:"'Keep pace' = manter o ritmo. A infraestrutura urbana não conseguiu acompanhar o crescimento populacional.",src:"UNESP 2022 Q26"},
+  {id:6,s:"Química",d:1,q:"O efeito fotoelétrico depende principalmente de:",opts:["Intensidade da luz","Frequência da luz","Massa dos elétrons","Temperatura do metal"],ok:1,exp:"Einstein: emissão de elétrons depende da FREQUÊNCIA (E=hf), não da intensidade. Descoberta que inaugurou a mecânica quântica.",src:"UNESP 2022"},
+  {id:7,s:"Matemática",d:2,q:"O número 210 em relação a triangulares T(n)=n(n+1)/2 e oblongos O(n)=n(n+1):",opts:["Apenas triangular","Apenas oblongo","Triangular E oblongo","Nenhum dos dois"],ok:2,exp:"T(20)=210 ✓ e O(14)=210 ✓. É ambos! Relação: O(n) = 2·T(n) — oblongos são sempre o dobro do triangular correspondente.",src:"UNESP 2022 Q85"},
+  {id:8,s:"Biologia",d:2,q:"Hemácias + algas em água destilada, centrifugação, microscópio:",opts:["Só hemácias; solução com clorofila","Só algas; solução com hemoglobina","Ambas; sem moléculas","Nenhuma; ambas as moléculas"],ok:1,exp:"Hemácias: sem parede celular → lise osmótica → hemoglobina na solução. Algas: parede rígida → sobrevivem → no precipitado.",src:"UNESP 2022 Q64"},
+  {id:9,s:"Química",d:2,q:"No teste do ouro, qual material daria falso positivo?",opts:["Mg (E°= −2,37V)","Al (E°= −1,66V)","Fe (E°= −0,44V)","Pt (E°= +1,20V)"],ok:3,exp:"Falso positivo = não se dissolve. E°(Pt)=+1,20V > E°(H⁺)=0V → ácido não consegue oxidar a platina, como o ouro.",src:"UNESP 2022"},
+  {id:10,s:"História",d:2,q:"Charge de Belmonte sobre a Semana de Arte Moderna ironiza:",opts:["O atraso da arte","Inexistência de preocupações populares","O descompasso vanguarda × gosto do público","A formação técnica dos artistas"],ok:2,exp:"Público olha os artistas com pena: 'Coitados, não?'. Ironia: a incompreensão era do público conservador, não dos artistas.",src:"UNESP 2022 Q40"},
+  {id:11,s:"Física",d:2,q:"600g água 10°C + 100g gelo −40°C + 800g água 5°C. Resultado:",opts:["1500g água a 10°C","1450g água + 50g gelo a 0°C","1500g gelo a −5°C","1500g água a 0°C"],ok:3,exp:"Q cedido=10000cal. Q p/ aquecer gelo=2000cal + fundir tudo=8000cal=10000cal. Equilíbrio: 1500g água a 0°C.",src:"UNESP 2022 Q79"},
+  {id:12,s:"Literatura",d:2,q:"Recurso que gera efeito cômico no diálogo do burro no 'Macário':",opts:["Antítese","Eufemismo","Hipérbole","Ambiguidade"],ok:3,exp:"'Burro' = animal e insulto. Ambiguidade lexical gera mal-entendidos progressivos — recurso central do texto.",src:"UNESP 2022 Q04"},
+  {id:13,s:"Biologia",d:3,q:"23 nomes populares de aves — taxonomicamente:",opts:["23 gêneros","1 único gênero","23 espécies em 1 gênero","1 classe, sem inferir gêneros"],ok:3,exp:"Todas são aves = mesma classe (Aves). Nomes populares ≠ nomenclatura científica. Não se infere nº de gêneros.",src:"UNESP 2022 Q61"},
+  {id:14,s:"Química",d:3,q:"SiO₂ + 3C → SiC + 2CO (rendimento 75%), 6t SiO₂ + 3,6t C:",opts:["5,6t SiC","4,0t SiC","3,0t SiC","2,5t SiC"],ok:2,exp:"M: SiO₂=60, C=12, SiC=40. n(SiO₂)=0,1Mmol, n(C)=0,3Mmol. Proporção correta. Teórico=4t × 75%=3t.",src:"UNESP 2022 Q70"},
+  {id:15,s:"Física",d:3,q:"Força gravitacional exoplaneta 2M1207b (5×Mjup) × estrela (0,025×Msol) a 40 UA:",opts:["8,3×10²⁰ N","5,0×10²⁰ N","2,5×10²¹ N","3,6×10²¹ N"],ok:0,exp:"F=Gm₁m₂/r². m₁=10²⁸kg; m₂=5×10²⁸kg; r=6×10¹²m. F=6×10⁻¹¹×10²⁸×5×10²⁸/(36×10²⁴)≈8,3×10²⁰N.",src:"UNESP 2022 Q77"},
+  {id:16,s:"Matemática",d:3,q:"P(pressão elevada | excesso de peso) na tabela da Q88:",opts:["12%","4%","50%","40%"],ok:3,exp:"P(A|B) = P(A∩B)/P(B) = 10%/25% = 40%. Probabilidade condicional — não é simplesmente 10%!",src:"UNESP 2022 Q88"},
+  {id:17,s:"Filosofia",d:2,q:"Norbert Elias: morte é problema dos vivos porque:",opts:["Humanos antecipam a própria morte","Mortos deixam dívidas","A morte é imprevisível","Animais também morrem"],ok:0,exp:"Só humanos sabem que morrerão e tomam precauções diante disso. Os mortos não têm problemas — só os vivos sofrem com a perspectiva da finitude.",src:"UNESP 2022 Q11"},
+  {id:18,s:"Biologia",d:2,q:"Hormônio vegetal que controla o fototropismo:",opts:["Giberelina","Citocinina","Etileno","Auxina (AIA)"],ok:3,exp:"Auxina acumula no lado não iluminado → elongamento celular → curvatura em direção à luz. Darwin (1880) demonstrou com coleóptiles.",src:"UNESP 2022 Q66"},
 ];
 
 const ESSAY_TOPICS=[
-  {t:"Invisibilidade e registro civil no Brasil",tipo:"ENEM",cor:"#7c5cfc",tip:"Paradoxo: cidadãos sem documentos são invisíveis ao Estado mas vulneráveis à exclusão. Argumente sobre acesso a direitos e responsabilidade do poder público."},
-  {t:"Viver em rede no século XXI",tipo:"ENEM",cor:"#06b6d4",tip:"Explore a dualidade: conectividade e acesso à informação X isolamento social, fake news e dependência tecnológica. Mostre os dois lados."},
-  {t:"Desigualdade de gênero no trabalho de cuidado",tipo:"ENEM",cor:"#ec4899",tip:"Dado: mulheres realizam 75% do trabalho de cuidado não remunerado. Conecte com mercado de trabalho, autonomia financeira e patriarcado."},
-  {t:"Escassez de semicondutores e soberania tecnológica",tipo:"FUVEST",cor:"#f0b429",tip:"Taiwan produz 90% dos chips avançados. Aborde dependência tecnológica de nações, segurança nacional e papel do Brasil."},
-  {t:"Democratização do esporte no Brasil",tipo:"FUVEST",cor:"#22c55e",tip:"Divisão entre ricos e pobres no acesso ao esporte. Relacione com privatização e cortes em escolas públicas. Use o skate olímpico como exemplo."},
-  {t:"Violência contra a mulher no Brasil",tipo:"ENEM",cor:"#ef4444",tip:"Use dados do Atlas da Violência. Causas estruturais: patriarcado e dependência econômica. Proposta: agente + ação + meio + efeito + finalidade."},
+  {t:"Invisibilidade e registro civil no Brasil",tipo:"ENEM",c:"#7c5cfc",dica:"Paradoxo: sem documentos, cidadãos são invisíveis ao Estado mas vulneráveis à exclusão social. Argumente sobre acesso a direitos, omissão do poder público e soluções estruturais."},
+  {t:"Viver em rede no século XXI",tipo:"ENEM",c:"#06b6d4",dica:"Dualidade: conectividade e acesso à informação X isolamento social, fake news e dependência tecnológica. Evite simplificações — apresente os dois lados com nuance."},
+  {t:"Desigualdade de gênero no trabalho de cuidado",tipo:"ENEM",c:"#ec4899",dica:"Dado: mulheres realizam 75% do trabalho de cuidado não remunerado. Conecte com mercado de trabalho, autonomia financeira e cultura patriarcal. Use dados concretos."},
+  {t:"Escassez de semicondutores e soberania tecnológica",tipo:"FUVEST",c:"#f0b429",dica:"Taiwan produz 90% dos chips avançados. Explore dependência tecnológica de nações, segurança nacional, guerra comercial EUA-China e o papel estratégico do Brasil."},
+  {t:"Democratização do esporte no Brasil",tipo:"FUVEST",c:"#22c55e",dica:"Divisão socioeconômica no acesso ao esporte. Relacione privatização do esporte infanto-juvenil com cortes em escolas públicas. Use o skate olímpico como caso de sucesso periférico."},
+  {t:"Violência contra a mulher no Brasil",tipo:"ENEM",c:"#f43f5e",dica:"Atlas da Violência: 1 mulher morta a cada 6h. Causas: patriarcado e dependência econômica. Proposta de intervenção completa: agente + ação + meio + efeito + finalidade."},
 ];
 
-const EXAMS=[
-  {id:"unesp2022",nome:"UNESP 2022",ano:"2022",cor:"#f0b429",total:90,
-   mats:["Biologia","Química","Física","Matemática","Geografia","História","Literatura","Inglês","Filosofia"],
-   hl:"G6PD · Placas Mercosul · Semana Arte Moderna · Revolta Malês · Canal de Suez · Panóptico · Sistema Binário",
-   qs:[
-    {n:2,s:"Literatura",t:"Para Macário, a poesia deveria ser:",opts:["(A) Elitista — só para o rico","(B) Hermética","(C) Despojada","(D) Engajada","(E) Sentimental"],ok:0,exp:"Macário diz que quando a poesia corria só pela mão do rico 'ia muito bem'. Critica a popularização que a tornou vulgar e comum."},
-    {n:4,s:"Literatura",t:"Efeito cômico no diálogo do burro decorre de:",opts:["(A) Antítese","(B) Eufemismo","(C) Hipérbole","(D) Ambiguidade","(E) Personificação"],ok:3,exp:"'Burro' = animal e insulto. Ambiguidade lexical gera série de mal-entendidos progressivos e cômicos."},
-    {n:11,s:"Filosofia",t:"Segundo Norbert Elias, a morte é problema dos vivos porque:",opts:["(A) Humanos antecipam a própria morte","(B) Mortos deixam dívidas","(C) Morte é imprevisível","(D) Animais não morrem","(E) Ciência não estuda a morte"],ok:0,exp:"Apenas humanos sabem que morrerão e tomam precauções. Os mortos não têm problemas — só os vivos sofrem com a perspectiva da finitude."},
-    {n:61,s:"Biologia",t:"23 nomes populares de aves — taxonomicamente pertencem a:",opts:["(A) 23 gêneros","(B) 1 único gênero","(C) 23 espécies em 1 gênero","(D) 1 família, sem inferir ordens","(E) 1 classe, sem inferir nº de gêneros"],ok:4,exp:"Todas são aves = mesma classe (Aves). Nomes populares ≠ classificação científica. Não se infere o número de gêneros."},
-    {n:85,s:"Matemática",t:"Sobre T(n)=n(n+1)/2 e O(n)=n(n+1), qual afirmação é CORRETA?",opts:["(A) 162 é o 15º triangular","(B) 13º triangular é primo","(C) 156 não é nem um nem outro","(D) 210 é triangular E oblongo","(E) Diferença entre triangulares é PG"],ok:3,exp:"T(20)=210 ✓ (triangular) e O(14)=210 ✓ (oblongo). 210 pertence a ambas! Relação: T(n) = O(n)/2."},
-    {n:88,s:"Matemática",t:"Renato tem excesso de peso. Probabilidade de ter pressão elevada:",opts:["(A) 12%","(B) 4%","(C) 50%","(D) 40%","(E) 10%"],ok:3,exp:"P(elevada|excesso) = P(elevada∩excesso)/P(excesso) = 10%/25% = 40%. Probabilidade condicional!"},
-  ]}
-];
+const EXAMS=[{
+  id:"u22",nome:"UNESP 2022",ano:"2022",cor:"#f0b429",total:90,
+  mats:["Biologia","Química","Física","Matemática","Geografia","História","Literatura","Inglês","Filosofia"],
+  hl:"G6PD/malária · Placas Mercosul · Semana Arte Moderna · Revolta Malês · Canal de Suez · Panóptico · Binário",
+  qs:[
+    {n:2,s:"Literatura",t:"Para Macário, a poesia deveria ser:",opts:["(A) Elitista — só para o rico","(B) Hermética e obscura","(C) Despojada e simples","(D) Engajada politicamente","(E) Sentimental e romântica"],ok:0,exp:"Macário afirma que quando a poesia 'corria pela mão do rico ia muito bem'. Critica a popularização que a tornou vulgar — defende que ela pertença à elite."},
+    {n:4,s:"Literatura",t:"Efeito cômico no diálogo do burro decorre de:",opts:["(A) Antítese","(B) Eufemismo","(C) Hipérbole","(D) Ambiguidade","(E) Personificação"],ok:3,exp:"'Burro' = animal e insulto. Ambiguidade lexical gera série progressiva de mal-entendidos cômicos."},
+    {n:11,s:"Filosofia",t:"Segundo Norbert Elias, a morte é 'problema dos vivos' porque:",opts:["(A) Humanos antecipam a própria morte","(B) Mortos deixam dívidas","(C) A morte é imprevisível","(D) Animais não morrem","(E) Ciência não estuda a morte"],ok:0,exp:"Só humanos sabem que morrerão e tomam precauções. Os mortos não sofrem — quem sofre com a perspectiva da finitude são os vivos."},
+    {n:61,s:"Biologia",t:"23 nomes populares de aves — taxonomicamente pertencem a:",opts:["(A) 23 gêneros","(B) 1 único gênero","(C) 23 espécies em 1 gênero","(D) 1 família, sem inferir ordens","(E) 1 classe, sem inferir gêneros"],ok:4,exp:"Todas são aves = mesma classe (Aves). Nomes populares ≠ taxonomia científica. Não se pode inferir o número de gêneros."},
+    {n:85,s:"Matemática",t:"Sobre T(n)=n(n+1)/2 e O(n)=n(n+1), qual CORRETA?",opts:["(A) 162 é o 15º triangular","(B) 13º triangular é primo","(C) 156 não é nem um nem outro","(D) 210 é triangular E oblongo","(E) Diferença entre triangulares é PG"],ok:3,exp:"T(20)=210 ✓ e O(14)=210 ✓. 210 pertence a ambas as sequências! Relação: T(n)=O(n)/2."},
+    {n:88,s:"Matemática",t:"Renato tem excesso de peso. P(pressão elevada)?",opts:["(A) 12%","(B) 4%","(C) 50%","(D) 40%","(E) 10%"],ok:3,exp:"P(elevada|excesso) = P(elevada∩excesso)/P(excesso) = 10%/25% = 40%. Probabilidade condicional — não confunda com 10%!"},
+  ]
+}];
 
 const MATS=["Todos","Biologia","Química","Física","Matemática","Geografia","História","Literatura","Filosofia","Redação","Inglês"];
+const TABS=["flashcards","quiz","essay","exams","stats"];
 
 // ── ESTADO ──
-let tab="flashcards", subj="Todos", diff=0;
-let flipped={}, studied={};
-let qIdx=0, qOk=0, qErr=0, qAns=null, qAnswered=false, qDone=false;
-let essayTopic=null, essayFB=null, essayLoad=false;
-let examAns={};
+let tab="flashcards",subj="Todos",diff=0;
+let flipped={},studied={};
+let qIdx=0,qOk=0,qErr=0,qAns=null,qAnswered=false,qDone=false;
+let eTopic=null,eFB=null,eLoad=false,eScores=null;
+let xAns={};
 
-// ── NAVEGAÇÃO ──
+// ── TABS ──
 function goTab(t){
   tab=t;
   document.querySelectorAll(".tab").forEach(e=>e.classList.remove("active"));
-  document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",["flashcards","quiz","essay","exams","stats"][i]===t));
+  document.querySelectorAll(".nb").forEach((b,i)=>b.classList.toggle("on",TABS[i]===t));
   document.getElementById("tab-"+t).classList.add("active");
   renderFilters();render();
 }
-
 function renderFilters(){
-  const el=document.getElementById("filters-area");
+  const el=document.getElementById("farea");
   if(["essay","exams","stats"].includes(tab)){el.innerHTML="";return;}
-  let h=`<div class="filters-bar"><span class="filters-label">Matéria:</span>`;
-  MATS.forEach(m=>{const on=subj===m,c=COLORS[m]||"var(--accent)";
-    h+=`<button class="filt${on?" on":""}" style="${on?`background:${c}22;border-color:${c};color:${c}`:""}" onclick="setSubj('${m}')">${m}</button>`;});
-  h+=`</div><div class="filters-bar" style="margin-bottom:18px"><span class="filters-label">Dificuldade:</span><div class="diff-bar">`;
+  let h=`<div class="fbar"><span class="flabel">Matéria:</span>`;
+  MATS.forEach(m=>{const on=subj===m,c=COR[m]||"var(--v)";
+    h+=`<button class="fc${on?" on":""}" style="${on?`background:${c}22;border-color:${c};color:${c}`:""}" onclick="setSubj('${m}')">${m}</button>`;});
+  h+=`</div><div class="fbar" style="margin-bottom:20px"><span class="flabel">Dificuldade:</span><div class="dbar">`;
   [["0","TODOS"],["1","★ Fácil"],["2","★★ Médio"],["3","★★★ Difícil"]].forEach(([v,l])=>{
-    h+=`<button class="diff-btn${diff==v?" on":""}" data-d="${v}" onclick="setDiff(${v})">${l}</button>`;});
+    h+=`<button class="dc${diff==v?" on":""}" data-d="${v}" onclick="setDiff(${v})">${l}</button>`;});
   h+=`</div></div>`;
   el.innerHTML=h;
 }
@@ -390,38 +655,35 @@ function setSubj(s){subj=s;if(tab==="quiz")resetQuiz();renderFilters();render();
 function setDiff(d){diff=d;if(tab==="quiz")resetQuiz();renderFilters();render();}
 
 function render(){
-  if(tab==="flashcards")renderCards();
-  else if(tab==="quiz")renderQuiz();
-  else if(tab==="essay")renderEssay();
-  else if(tab==="exams")renderExams();
-  else if(tab==="stats")renderStats();
+  const fns={flashcards:renderCards,quiz:renderQuiz,essay:renderEssay,exams:renderExams,stats:renderStats};
+  fns[tab]&&fns[tab]();
   updateHdr();
 }
 
 // ── FLASHCARDS ──
 function getCards(){return CARDS.filter(c=>(subj==="Todos"||c.s===subj)&&(diff==0||c.d==diff));}
 function renderCards(){
-  const cards=getCards(), total=cards.length, done=cards.filter(c=>studied[c.id]).length;
-  const prog=document.getElementById("fc-prog");
-  prog.style.display="flex";
-  prog.innerHTML=`<div class="pbt-item"><div class="pbt-label">Estudados</div><div class="pbt-val" style="color:#22c55e">${done}</div></div>
-    <div class="pbt-item"><div class="pbt-label">Total</div><div class="pbt-val">${total}</div></div>
-    <div class="pbt-bar"><div class="pbt-label">Progresso</div>
-      <div class="prog-bar" style="margin-top:5px"><div class="prog-fill" style="width:${total?done/total*100:0}%;background:linear-gradient(90deg,#22c55e,#06b6d4)"></div></div>
+  const cards=getCards(),total=cards.length,done=cards.filter(c=>studied[c.id]).length;
+  const p=document.getElementById("fcprog");p.style.display="flex";
+  const pct=total?done/total*100:0;
+  p.innerHTML=`<div class="ps-item"><div class="ps-label">Estudados</div><div class="ps-val" style="color:var(--ok)">${done}</div></div>
+    <div class="ps-item"><div class="ps-label">Total</div><div class="ps-val">${total}</div></div>
+    <div class="ps-bar-wrap"><div class="ps-label">Progresso — ${Math.round(pct)}%</div>
+      <div class="ps-bar"><div class="ps-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--ok),var(--cy))"></div></div>
     </div>`;
-  if(!cards.length){document.getElementById("cardsGrid").innerHTML='<div class="empty">Nenhum card para esses filtros.</div>';return;}
-  document.getElementById("cardsGrid").innerHTML=cards.map(c=>{
-    const f=flipped[c.id], col=COLORS[c.s]||"var(--accent)";
-    const dtag=["","★ Fácil","★★ Médio","★★★ Difícil"][c.d], dcls=["","d1","d2","d3"][c.d];
+  if(!cards.length){document.getElementById("cgrid").innerHTML='<div class="empty">Nenhum card para esses filtros.</div>';return;}
+  document.getElementById("cgrid").innerHTML=cards.map(c=>{
+    const f=flipped[c.id],col=COR[c.s]||"var(--v)";
+    const dt=["","★ Fácil","★★ Médio","★★★ Difícil"][c.d],dc=["","d1","d2","d3"][c.d];
     return `<div class="card${f?" flip":""}" onclick="flipCard(${c.id})">
       <div class="card-top">
         <span class="stag" style="background:${col}22;color:${col}">${c.s}</span>
-        <span class="diff-tag ${dcls}">${dtag}</span>
+        <span class="dtag ${dc}">${dt}</span>
       </div>
-      ${studied[c.id]?`<div class="card-ok">✓</div>`:""}
+      ${studied[c.id]?`<div class="card-check">✓</div>`:""}
       <p class="card-q">${c.q}</p>
       <div class="card-ans">${c.a}</div>
-      <p class="card-hint">Toque para revelar →</p>
+      <p class="card-hint">↩ Toque para revelar</p>
     </div>`;
   }).join("");
 }
@@ -430,48 +692,44 @@ function flipCard(id){flipped[id]=!flipped[id];studied[id]=true;renderCards();up
 // ── QUIZ ──
 function getQuiz(){return QUIZ.filter(q=>(subj==="Todos"||q.s===subj)&&(diff==0||q.d==diff));}
 function renderQuiz(){
-  const qs=getQuiz(), wrap=document.getElementById("quizWrap");
-  if(!qs.length){wrap.innerHTML='<div class="empty">Nenhuma questão para esses filtros.</div>';return;}
+  const qs=getQuiz(),w=document.getElementById("qwrap");
+  if(!qs.length){w.innerHTML='<div class="empty">Nenhuma questão para esses filtros.</div>';return;}
   if(qDone){
-    const pct=qOk/qs.length;
-    wrap.innerHTML=`<div class="quiz-done">
-      <div class="quiz-done-emoji">${pct>=.8?"🏆":pct>=.6?"💪":"📖"}</div>
-      <h2>Quiz Concluído!</h2>
-      <div class="score" style="color:${pct>=.7?"#22c55e":pct>=.5?"var(--gold)":"var(--red)"}">${qOk}/${qs.length}</div>
-      <p>${pct>=.8?"Excelente! Você domina o conteúdo.":pct>=.6?"Bom resultado! Revise os erros.":"Continue estudando — a persistência é o caminho!"}</p>
+    const p=qOk/qs.length;
+    w.innerHTML=`<div class="quiz-done">
+      <span class="qd-emoji">${p>=.8?"🏆":p>=.6?"💪":"📖"}</span>
+      <div class="qd-h">${p>=.8?"Excelente domínio!":p>=.6?"Bom resultado!":"Continue estudando!"}</div>
+      <div class="qd-score" style="color:${p>=.7?"var(--ok)":p>=.5?"var(--go)":"var(--no)"}">${qOk}/${qs.length}</div>
+      <p class="qd-p">${p>=.8?"Você domina o conteúdo da UNESP 2022.":p>=.6?"Revise os erros e repita.":"A persistência é o caminho — cada tentativa conta."}</p>
       <button class="btn" onclick="resetQuiz()">Tentar Novamente</button>
     </div>`;return;
   }
-  const q=qs[qIdx], col=COLORS[q.s]||"var(--accent)";
-  const dtag=["","★ Fácil","★★ Médio","★★★ Difícil"][q.d], dcls=["","d1","d2","d3"][q.d];
+  const q=qs[qIdx],col=COR[q.s]||"var(--v)";
+  const dt=["","★ Fácil","★★ Médio","★★★ Difícil"][q.d],dc=["","d1","d2","d3"][q.d];
   const opts=q.opts.map((o,i)=>{
-    let cls="opt";
-    if(qAnswered){if(i===q.ok)cls+=" ok";else if(i===qAns&&i!==q.ok)cls+=" err";}
-    return `<button class="${cls}" onclick="answerQ(${i})" ${qAnswered?"disabled":""}>${o}</button>`;
+    let c="opt";
+    if(qAnswered){if(i===q.ok)c+=" ok";else if(i===qAns&&i!==q.ok)c+=" no";}
+    return `<button class="${c}" onclick="answerQ(${i})" ${qAnswered?"disabled":""}>${o}</button>`;
   }).join("");
-  const exp=qAnswered?`<div class="quiz-exp"><strong>💡 Explicação:</strong> ${q.exp}<br><small style="opacity:.6;margin-top:4px;display:block">Fonte: ${q.src}</small></div>
-    <button class="btn btn-full" onclick="nextQ()">${qIdx+1>=qs.length?"Ver resultado →":"Próxima →"}</button>`:"";
-  wrap.innerHTML=`
-    <div class="quiz-header">
-      <div class="quiz-prog"><div class="quiz-prog-fill" style="width:${qIdx/qs.length*100}%"></div></div>
-      <div class="quiz-meta">
-        <span>Q ${qIdx+1}/${qs.length}</span>
-        <span class="ok-c">✓${qOk}</span>
-        <span class="err-c">✗${qErr}</span>
-      </div>
+  const exp=qAnswered?`<div class="qexp"><strong>💡 Explicação:</strong> ${q.exp}<br><small style="opacity:.55;margin-top:5px;display:block">Fonte: ${q.src}</small></div>
+    <button class="btn btn-w" onclick="nextQ()">${qIdx+1>=qs.length?"Ver resultado →":"Próxima questão →"}</button>`:"";
+  w.innerHTML=`
+    <div class="quiz-hdr">
+      <div class="qprog"><div class="qprog-fill" style="width:${qIdx/qs.length*100}%"></div></div>
+      <div class="qmeta"><span>Q${qIdx+1}/${qs.length}</span><span class="q-ok">✓${qOk}</span><span class="q-no">✗${qErr}</span></div>
     </div>
-    <div class="quiz-box">
-      <div class="quiz-box-top">
+    <div class="qbox">
+      <div class="qbox-top">
         <div style="display:flex;gap:7px;flex-wrap:wrap">
           <span class="stag" style="background:${col}22;color:${col}">${q.s}</span>
-          <span class="diff-tag ${dcls}">${dtag}</span>
+          <span class="dtag ${dc}">${dt}</span>
         </div>
-        <span class="quiz-src">${q.src}</span>
+        <span class="qsrc">${q.src}</span>
       </div>
-      <p class="quiz-q">${q.q}</p>
+      <p class="qq">${q.q}</p>
     </div>
     <div class="opts">${opts}</div>
-    <div style="margin-top:12px">${exp}</div>`;
+    <div style="margin-top:13px">${exp}</div>`;
 }
 function answerQ(i){if(qAnswered)return;qAns=i;qAnswered=true;if(i===getQuiz()[qIdx].ok)qOk++;else qErr++;renderQuiz();updateHdr();}
 function nextQ(){const qs=getQuiz();if(qIdx+1>=qs.length)qDone=true;else{qIdx++;qAnswered=false;qAns=null;}renderQuiz();}
@@ -479,163 +737,304 @@ function resetQuiz(){qIdx=0;qOk=0;qErr=0;qAnswered=false;qDone=false;qAns=null;r
 
 // ── REDAÇÃO ──
 function renderEssay(){
-  const w=document.getElementById("essayWrap");
-  if(!essayTopic){
-    w.innerHTML=`<div class="section-title">Prática de Redação</div>
-      <div class="section-sub">Escolha um tema e receba correção das 5 competências ENEM pela IA</div>
-      <div class="essay-grid">${ESSAY_TOPICS.map((t,i)=>`
-        <div class="essay-card" onclick="selTopic(${i})">
-          <span class="etag" style="background:${t.cor}22;color:${t.cor}">${t.tipo}</span>
-          <h4>${t.t}</h4>
-          <p>${t.tip}</p>
+  const w=document.getElementById("ewrap");
+  if(!eTopic){
+    w.innerHTML=`<div class="sec-hd"><div class="sec-title">Prática de Redação</div>
+      <div class="sec-sub">Escolha um tema, escreva, receba correção das 5 competências ENEM pela IA e exporte em PDF</div></div>
+      <div class="etopics">${ESSAY_TOPICS.map((t,i)=>`
+        <div class="etcard" style="--c:${t.c}" onclick="selTopic(${i})">
+          <span class="et-tipo" style="color:${t.c}">${t.tipo}</span>
+          <div class="et-titulo">${t.t}</div>
+          <div class="et-dica">${t.dica}</div>
         </div>`).join("")}</div>`;return;
   }
-  const t=essayTopic;
+  const t=eTopic;
+  let fbHTML="";
+  if(eLoad){fbHTML=`<div class="efb"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;}
+  else if(eFB){
+    const scs=eScores||{c1:0,c2:0,c3:0,c4:0,c5:0,total:0};
+    fbHTML=`<div class="efb">
+      <div class="efb-title">📋 Correção — 5 Competências ENEM
+        <button class="btn-out" onclick="exportFBPDF()" style="margin-left:auto">📄 Salvar correção em PDF</button>
+      </div>
+      <div class="score-grid">
+        <div class="score-card"><div class="score-n" style="color:${scoreColor(scs.c1,200)}">${scs.c1}/200</div><div class="score-lbl">① Norma Culta</div></div>
+        <div class="score-card"><div class="score-n" style="color:${scoreColor(scs.c2,200)}">${scs.c2}/200</div><div class="score-lbl">② Tema</div></div>
+        <div class="score-card"><div class="score-n" style="color:${scoreColor(scs.c3,200)}">${scs.c3}/200</div><div class="score-lbl">③ Argumentação</div></div>
+        <div class="score-card"><div class="score-n" style="color:${scoreColor(scs.c4,200)}">${scs.c4}/200</div><div class="score-lbl">④ Coesão</div></div>
+        <div class="score-card"><div class="score-n" style="color:${scoreColor(scs.c5,200)}">${scs.c5}/200</div><div class="score-lbl">⑤ Proposta</div></div>
+      </div>
+      <div class="score-card" style="text-align:center;margin-bottom:18px;padding:14px">
+        <div style="font-size:11px;color:var(--sub);margin-bottom:4px;font-family:'DM Mono',monospace">NOTA TOTAL</div>
+        <div style="font-size:42px;font-weight:900;font-family:'DM Mono',monospace;color:${scoreColor(scs.total,1000)}">${scs.total}/1000</div>
+      </div>
+      <div class="efb-text">${eFB}</div>
+    </div>`;
+  }
+
   w.innerHTML=`
-    <div class="essay-top">
-      <button class="btn-sec" onclick="voltarTemas()">← Temas</button>
-      <h3 style="color:${t.cor};font-family:'Playfair Display',serif;font-size:16px">${t.t}</h3>
-      <span class="etag" style="background:${t.cor}22;color:${t.cor}">${t.tipo}</span>
+    <div class="print-header">
+      <h2>Redação — ${t.t}</h2>
+      <p>Tema ${t.tipo} · UNESP Study Hub · ${new Date().toLocaleDateString('pt-BR')}</p>
     </div>
-    <div class="tip-box"><strong>💡 Dica:</strong> ${t.tip}</div>
-    <div class="comp-box"><strong style="margin-right:6px">5 competências:</strong>
-      <span class="comp-tag">① Norma culta</span>
-      <span class="comp-tag">② Tema</span>
-      <span class="comp-tag">③ Argumentação</span>
-      <span class="comp-tag">④ Coesão</span>
-      <span class="comp-tag">⑤ Proposta</span>
+    <div class="essay-header">
+      <button class="btn-out" onclick="voltarTemas()">← Temas</button>
+      <h3 style="color:${t.c};font-family:'Instrument Serif',serif;font-size:18px;flex:1">${t.t}</h3>
+      <span class="dtag" style="background:${t.c}22;color:${t.c}">${t.tipo}</span>
     </div>
-    <textarea id="essayTA" placeholder="Escreva sua redação aqui... (mínimo 100 caracteres)" oninput="updW()">${window._etxt||""}</textarea>
-    <div class="essay-footer">
-      <span class="wcount" id="wc">0 palavras · 0 linhas</span>
-      <button class="btn" id="corrBtn" onclick="corrigir()" disabled>${essayLoad?"⏳ Corrigindo...":"🎓 Corrigir com IA"}</button>
+    <div class="tipbox"><strong>💡 Dica:</strong> ${t.dica}</div>
+    <div class="comp5">
+      <strong style="color:var(--sub);font-size:11px;margin-right:4px">5 competências:</strong>
+      <span class="ctag">① Norma culta</span>
+      <span class="ctag">② Tema</span>
+      <span class="ctag">③ Argumentação</span>
+      <span class="ctag">④ Coesão</span>
+      <span class="ctag">⑤ Proposta</span>
     </div>
-    ${essayFB?`<div class="essay-fb"><h4>📋 Correção — 5 Competências ENEM</h4><div class="essay-fb-text">${essayFB}</div></div>`:""}`;
+    <textarea id="eta" placeholder="Escreva sua redação aqui...&#10;&#10;Dica: use parágrafo de introdução + 2 argumentos + conclusão com proposta de intervenção completa." oninput="updW()">${window._etxt||""}</textarea>
+    <div class="essay-toolbar">
+      <span class="wc" id="wc">0 palavras · 0 linhas</span>
+      <div class="essay-actions">
+        <button class="btn-copy" onclick="copyText()">📋 Copiar texto</button>
+        <button class="btn-pdf" onclick="savePDF()">📄 Salvar redação em PDF</button>
+        <button class="btn" id="corrBtn" onclick="corrigir()" disabled>${eLoad?"⏳ Corrigindo...":"🎓 Corrigir com IA"}</button>
+      </div>
+    </div>
+    ${fbHTML}`;
   updW();
 }
+
+function scoreColor(v,max){const p=v/max;return p>=.8?"var(--ok)":p>=.5?"var(--go)":"var(--no)";}
+
 function updW(){
-  const ta=document.getElementById("essayTA");if(!ta)return;
+  const ta=document.getElementById("eta");if(!ta)return;
   const txt=ta.value;window._etxt=txt;
-  const w=txt.split(/\s+/).filter(Boolean).length, l=txt.split("\n").filter(x=>x.trim()).length;
-  const wc=document.getElementById("wc");if(wc)wc.textContent=`${w} palavras · ${l} linhas`;
+  const ws=txt.split(/\s+/).filter(Boolean).length,ls=txt.split("\n").filter(x=>x.trim()).length;
+  const wc=document.getElementById("wc");if(wc)wc.textContent=`${ws} palavras · ${ls} linhas`;
   const btn=document.getElementById("corrBtn");
-  if(btn){const ok=txt.trim().length>=100&&!essayLoad;btn.disabled=!ok;btn.textContent=essayLoad?"⏳ Corrigindo...":"🎓 Corrigir com IA";}
+  if(btn){const ok=txt.trim().length>=80&&!eLoad;btn.disabled=!ok;btn.textContent=eLoad?"⏳ Corrigindo...":"🎓 Corrigir com IA";}
 }
-function selTopic(i){essayTopic=ESSAY_TOPICS[i];essayFB=null;window._etxt="";renderEssay();}
-function voltarTemas(){essayTopic=null;essayFB=null;window._etxt="";renderEssay();}
+function selTopic(i){eTopic=ESSAY_TOPICS[i];eFB=null;eScores=null;window._etxt="";renderEssay();}
+function voltarTemas(){eTopic=null;eFB=null;eScores=null;window._etxt="";renderEssay();}
+
+function copyText(){
+  const ta=document.getElementById("eta");if(!ta||!ta.value.trim())return;
+  navigator.clipboard.writeText(ta.value).then(()=>showToast("✓ Texto copiado!")).catch(()=>{
+    ta.select();document.execCommand("copy");showToast("✓ Texto copiado!");
+  });
+}
+function showToast(msg){
+  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+function savePDF(){
+  const ta=document.getElementById("eta");
+  if(!ta||!ta.value.trim()){showToast("⚠️ Escreva a redação primeiro!");return;}
+  const titulo=eTopic?.t||"Redação";
+  const conteudo=ta.value;
+  const data=new Date().toLocaleDateString('pt-BR');
+  const win=window.open("","_blank","width=800,height=600");
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Redação — ${titulo}</title>
+    <style>
+      body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:40px;color:#111;line-height:1.9;font-size:14pt}
+      h1{font-size:18pt;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:6px}
+      .meta{color:#666;font-size:10pt;margin-bottom:30px}
+      .texto{white-space:pre-wrap;text-align:justify;text-indent:2em}
+      @media print{body{margin:20mm;padding:0}}
+    </style></head><body>
+    <h1>${titulo}</h1>
+    <div class="meta">Tema ${eTopic?.tipo||""} · UNESP Study Hub · ${data}</div>
+    <div class="texto">${conteudo.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>
+    <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`);
+  win.document.close();
+}
+
+function exportFBPDF(){
+  if(!eFB)return;
+  const titulo=eTopic?.t||"Redação";
+  const scs=eScores||{};
+  const win=window.open("","_blank","width=800,height=700");
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Correção — ${titulo}</title>
+    <style>
+      body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:40px;color:#111;line-height:1.75;font-size:12pt}
+      h1{font-size:18pt;border-bottom:2px solid #333;padding-bottom:8px}
+      .meta{color:#666;font-size:10pt;margin-bottom:24px}
+      .scores{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0}
+      .sc{border:1px solid #ccc;border-radius:6px;padding:10px;text-align:center}
+      .sc-n{font-size:20pt;font-weight:900}
+      .sc-l{font-size:8pt;color:#666}
+      .total{font-size:28pt;font-weight:900;text-align:center;border:2px solid #333;border-radius:8px;padding:14px;margin:14px 0}
+      .texto{white-space:pre-wrap}
+      @media print{body{margin:20mm;padding:0}}
+    </style></head><body>
+    <h1>Correção de Redação</h1>
+    <div class="meta">Tema: ${titulo} · ${eTopic?.tipo||""} · ${new Date().toLocaleDateString('pt-BR')}</div>
+    <div class="scores">
+      <div class="sc"><div class="sc-n">${scs.c1||0}/200</div><div class="sc-l">① Norma Culta</div></div>
+      <div class="sc"><div class="sc-n">${scs.c2||0}/200</div><div class="sc-l">② Tema</div></div>
+      <div class="sc"><div class="sc-n">${scs.c3||0}/200</div><div class="sc-l">③ Argumentação</div></div>
+      <div class="sc"><div class="sc-n">${scs.c4||0}/200</div><div class="sc-l">④ Coesão</div></div>
+      <div class="sc"><div class="sc-n">${scs.c5||0}/200</div><div class="sc-l">⑤ Proposta</div></div>
+    </div>
+    <div class="total">NOTA TOTAL: ${scs.total||0}/1000</div>
+    <div class="texto">${eFB.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>
+    <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`);
+  win.document.close();
+}
+
 async function corrigir(){
-  const ta=document.getElementById("essayTA");
-  if(!ta||ta.value.trim().length<100)return;
-  essayLoad=true;const txt=ta.value;renderEssay();
+  const ta=document.getElementById("eta");
+  if(!ta||ta.value.trim().length<80)return;
+  eLoad=true;const txt=ta.value;renderEssay();
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,
-        system:`Você é professor especialista em redação ENEM. Avalie pelas 5 competências (0-200 cada, máx 1000):\n1. Domínio da norma culta\n2. Compreensão e desenvolvimento do tema\n3. Seleção e organização de argumentos\n4. Mecanismos de coesão e coerência\n5. Proposta de intervenção respeitando Direitos Humanos\n\nFormato:\n**Nota Total: XXX/1000**\nC1 — Norma culta: XX/200 — [comentário]\nC2 — Tema: XX/200 — [comentário]\nC3 — Argumentação: XX/200 — [comentário]\nC4 — Coesão: XX/200 — [comentário]\nC5 — Proposta: XX/200 — [comentário]\n\n✅ Pontos fortes:\n- [1]\n- [2]\n\n📌 A melhorar:\n- [1]\n- [2]\n\nEm português. Seja construtivo e específico.`,
-        messages:[{role:"user",content:`Tema: "${essayTopic.t}"\n\nRedação:\n${txt}`}]})});
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1400,
+        system:`Você é professor especialista em redação ENEM. Avalie o texto pelas 5 competências (0-200 cada, máx 1000). 
+IMPORTANTE: Na primeira linha retorne SOMENTE os scores em JSON assim: {"c1":160,"c2":180,"c3":160,"c4":140,"c5":160,"total":800}
+Depois, separe com uma linha em branco e escreva a avaliação completa em português:
+
+**C1 — Norma Culta: XX/200**
+[comentário específico sobre gramática, ortografia, pontuação, concordância]
+
+**C2 — Desenvolvimento do Tema: XX/200**
+[comentário sobre compreensão e desenvolvimento do tema proposto]
+
+**C3 — Argumentação: XX/200**
+[comentário sobre seleção de argumentos, uso de repertório sociocultural]
+
+**C4 — Coesão e Coerência: XX/200**
+[comentário sobre conectivos, progressão textual, coerência]
+
+**C5 — Proposta de Intervenção: XX/200**
+[comentário sobre os 5 elementos: agente, ação, modo, efeito, finalidade]
+
+✅ **Pontos Fortes:**
+- [ponto 1]
+- [ponto 2]
+
+📌 **A Melhorar:**
+- [melhoria 1]
+- [melhoria 2]
+
+Seja construtivo, específico e cite trechos do texto quando possível.`,
+        messages:[{role:"user",content:`Tema: "${eTopic.t}" (${eTopic.tipo})\n\nRedação:\n${txt}`}]})});
     const data=await res.json();
-    essayFB=(data.content&&data.content[0]?.text)||"Erro ao obter feedback.";
+    const raw=(data.content&&data.content[0]?.text)||"";
+    // Extrai JSON de scores da primeira linha
+    const linhas=raw.split("\n");
+    let scoresJSON=null;
+    for(let i=0;i<Math.min(4,linhas.length);i++){
+      const l=linhas[i].trim();
+      if(l.startsWith("{")){try{scoresJSON=JSON.parse(l);break;}catch(e){}}
+    }
+    eScores=scoresJSON||{c1:0,c2:0,c3:0,c4:0,c5:0,total:0};
+    eFB=linhas.slice(scoresJSON?1:0).join("\n").trim();
     window._etxt=txt;
-  }catch(e){essayFB="Erro de conexão. Verifique sua internet.";}
-  essayLoad=false;renderEssay();
+  }catch(e){eFB="Erro de conexão com a IA. Verifique sua internet e tente novamente.";}
+  eLoad=false;renderEssay();
 }
 
 // ── PROVAS ──
 function renderExams(){
-  const w=document.getElementById("examsWrap");
+  const w=document.getElementById("xwrap");
   const pdfURL="provafase1_exatashumanas.pdf";
-  let html=`
-    <div class="pdf-hero">
-      <h3>📄 UNESP 2022 — Prova Completa (Exatas & Humanidades)</h3>
-      <p>90 questões · Biologia, Química, Física, Matemática, Geografia, História, Literatura, Inglês, Filosofia</p>
-      <div class="pdf-actions">
-        <a href="${pdfURL}" download class="pdf-btn-gold">⬇️ Baixar PDF da Prova</a>
-        <button class="pdf-action" onclick="togglePDF()"><span id="pdfLbl">👁️ Ver PDF na tela</span></button>
-        <a href="${pdfURL}" target="_blank" class="pdf-action">🔗 Abrir em nova aba</a>
-      </div>
-      <div class="pdf-viewer" id="pdfV">
-        <iframe src="${pdfURL}" title="UNESP 2022"></iframe>
-      </div>
+  let h=`<div class="pdf-hero">
+    <div class="pdf-h3">📄 UNESP 2022 — Prova Completa</div>
+    <div class="pdf-p">90 questões · Biologia, Química, Física, Matemática, Geografia, História, Literatura, Inglês, Filosofia · Exatas & Humanidades</div>
+    <div class="pdf-acts">
+      <a href="${pdfURL}" download class="pdf-gold">⬇️ Baixar PDF</a>
+      <button class="pdf-sec" onclick="togglePDF()"><span id="pdfLbl">👁️ Ver na tela</span></button>
+      <a href="${pdfURL}" target="_blank" class="pdf-sec">🔗 Nova aba</a>
     </div>
-    <p style="color:var(--muted);font-size:12px;margin-bottom:20px">⚠️ Para ver o PDF, suba o arquivo <strong>provafase1_exatashumanas.pdf</strong> no mesmo repositório GitHub que o index.html.</p>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Questões selecionadas com gabarito e explicação. Clique para expandir.</p>
-    <div class="exams-grid">`;
-  EXAMS.forEach(exam=>{
-    const qs=exam.qs.map(q=>{
-      const key=exam.id+"_"+q.n, ans=examAns[key], col=COLORS[q.s]||"var(--accent)";
-      const opts=q.opts.map((o,i)=>{
-        let cls="qopt";
-        if(ans!==undefined){if(i===q.ok)cls+=" ok";else if(i===ans&&i!==q.ok)cls+=" err";}
-        return `<button class="${cls}" onclick="ansExam('${key}',${i},${q.ok})" ${ans!==undefined?"disabled":""}>${o}</button>`;
+    <div class="pdf-viewer" id="pdfV"><iframe src="${pdfURL}" title="UNESP 2022"></iframe></div>
+  </div>
+  <p style="color:var(--sub);font-size:12px;margin-bottom:22px;background:var(--ink3);border:1px solid var(--line);padding:12px 16px;border-radius:10px">
+    ⚠️ Para o botão de PDF funcionar, suba o arquivo <code style="color:var(--v2)">provafase1_exatashumanas.pdf</code> no mesmo repositório GitHub que o <code style="color:var(--v2)">index.html</code>.
+  </p>
+  <div class="egrid">`;
+  EXAMS.forEach(ex=>{
+    const qs=ex.qs.map(q=>{
+      const key=ex.id+"_"+q.n,ans=xAns[key],col=COR[q.s]||"var(--v)";
+      const opts=q.opts.map((o,i)=>{let c="qopt";
+        if(ans!==undefined){if(i===q.ok)c+=" ok";else if(i===ans&&i!==q.ok)c+=" no";}
+        return `<button class="${c}" onclick="ansExam('${key}',${i},${q.ok})" ${ans!==undefined?"disabled":""}>${o}</button>`;
       }).join("");
       return `<div class="qitem">
         <div class="qitem-top"><span class="qnum">Q${q.n}</span><span class="stag" style="background:${col}22;color:${col};font-size:10px">${q.s}</span></div>
         <p>${q.t}</p><div class="qopts">${opts}</div>
-        <div class="qexp${ans!==undefined?" show":""}" id="exp_${key}">💡 ${q.exp}</div>
+        <div class="qexp2${ans!==undefined?" show":""}" id="exp_${key}">💡 ${q.exp}</div>
       </div>`;}).join("");
-    const tags=exam.mats.map(m=>`<span class="stag" style="background:${COLORS[m]||"#fff"}22;color:${COLORS[m]||"#fff"};font-size:10px">${m}</span>`).join("");
-    html+=`<div class="exam-card">
+    const tags=ex.mats.map(m=>`<span class="stag" style="background:${COR[m]||"#fff"}22;color:${COR[m]||"#fff"};font-size:10px">${m}</span>`).join("");
+    h+=`<div class="exam-card">
       <div class="exam-head">
-        <div><span class="exam-badge">UNESP</span><h3 style="color:var(--text);font-size:16px;margin-top:8px">${exam.nome}</h3><p style="color:var(--muted);font-size:11px;margin-top:3px">Exatas & Humanidades</p></div>
-        <div class="exam-year" style="color:${exam.cor}">${exam.ano}</div>
+        <div><span class="ebadge">UNESP</span><h3 style="color:var(--txt);font-size:17px;margin-top:9px">${ex.nome}</h3><p style="color:var(--sub);font-size:11px;margin-top:3px">Exatas & Humanidades</p></div>
+        <div class="eyear" style="color:${ex.cor}">${ex.ano}</div>
       </div>
       <div class="exam-body">
-        <div class="exam-stats">
-          <div class="estat"><div class="estat-n" style="color:${exam.cor}">${exam.total}</div><div class="estat-l">questões</div></div>
-          <div class="estat"><div class="estat-n" style="color:${exam.cor}">${exam.mats.length}</div><div class="estat-l">matérias</div></div>
-          <div class="estat"><div class="estat-n" style="color:${exam.cor}">${exam.qs.length}</div><div class="estat-l">aqui</div></div>
+        <div class="estats">
+          <div class="estat"><div class="estat-n" style="color:${ex.cor}">${ex.total}</div><div class="estat-l">questões</div></div>
+          <div class="estat"><div class="estat-n" style="color:${ex.cor}">${ex.mats.length}</div><div class="estat-l">matérias</div></div>
+          <div class="estat"><div class="estat-n" style="color:${ex.cor}">${ex.qs.length}</div><div class="estat-l">aqui</div></div>
         </div>
-        <p class="exam-hl">✦ ${exam.hl}</p>
-        <div class="exam-tags">${tags}</div>
-        <button class="exam-toggle" onclick="toggleExam('${exam.id}')">📖 Ver questões selecionadas</button>
-        <div class="exam-qs" id="qs_${exam.id}"><div style="margin-top:9px">${qs}</div></div>
+        <p class="exam-hl">✦ ${ex.hl}</p>
+        <div class="etags">${tags}</div>
+        <button class="etog" onclick="toggleExam('${ex.id}')">📖 Ver questões selecionadas</button>
+        <div class="eqs" id="qs_${ex.id}"><div style="margin-top:10px">${qs}</div></div>
       </div>
     </div>`;
   });
-  w.innerHTML=html+`</div>`;
+  w.innerHTML=h+`</div>`;
 }
-function togglePDF(){const v=document.getElementById("pdfV"),l=document.getElementById("pdfLbl"),s=v.style.display!=="block";v.style.display=s?"block":"none";l.textContent=s?"🔼 Ocultar PDF":"👁️ Ver PDF na tela";}
+function togglePDF(){const v=document.getElementById("pdfV"),l=document.getElementById("pdfLbl"),s=v.style.display!=="block";v.style.display=s?"block":"none";l.textContent=s?"🔼 Ocultar PDF":"👁️ Ver na tela";}
 function toggleExam(id){document.getElementById("qs_"+id).classList.toggle("open");}
 function ansExam(key,c,ok){
-  if(examAns[key]!==undefined)return;
-  examAns[key]=c;renderExams();
-  setTimeout(()=>{const e=document.getElementById("exp_"+key);if(e)e.scrollIntoView({behavior:"smooth",block:"nearest"});const id=key.split("_")[0];const el=document.getElementById("qs_"+id);if(el&&!el.classList.contains("open"))el.classList.add("open");},80);
+  if(xAns[key]!==undefined)return;
+  xAns[key]=c;renderExams();
+  setTimeout(()=>{const e=document.getElementById("exp_"+key);if(e)e.scrollIntoView({behavior:"smooth",block:"nearest"});
+    const id=key.split("_")[0],el=document.getElementById("qs_"+id);if(el&&!el.classList.contains("open"))el.classList.add("open");},80);
 }
 
 // ── PROGRESSO ──
 function renderStats(){
-  const w=document.getElementById("statsWrap");
-  const tCards=CARDS.length, dCards=Object.keys(studied).length;
-  const d1=CARDS.filter(c=>c.d===1), d2=CARDS.filter(c=>c.d===2), d3=CARDS.filter(c=>c.d===3);
-  const d1d=d1.filter(c=>studied[c.id]).length, d2d=d2.filter(c=>studied[c.id]).length, d3d=d3.filter(c=>studied[c.id]).length;
-  const matS={};
-  CARDS.forEach(c=>{if(!matS[c.s])matS[c.s]={t:0,d:0};matS[c.s].t++;if(studied[c.id])matS[c.s].d++;});
-  const matRows=Object.entries(matS).map(([s,v])=>{
-    const col=COLORS[s]||"var(--accent)", pct=v.t?Math.round(v.d/v.t*100):0;
+  const w=document.getElementById("swrap");
+  const tc=CARDS.length,dc=Object.keys(studied).length;
+  const d1=CARDS.filter(c=>c.d===1),d2=CARDS.filter(c=>c.d===2),d3=CARDS.filter(c=>c.d===3);
+  const d1d=d1.filter(c=>studied[c.id]).length,d2d=d2.filter(c=>studied[c.id]).length,d3d=d3.filter(c=>studied[c.id]).length;
+  const ms={};CARDS.forEach(c=>{if(!ms[c.s])ms[c.s]={t:0,d:0};ms[c.s].t++;if(studied[c.id])ms[c.s].d++;});
+  const mrows=Object.entries(ms).map(([s,v])=>{
+    const col=COR[s]||"var(--v)",p=v.t?Math.round(v.d/v.t*100):0;
     return `<div class="mat-row">
-      <span class="stag" style="background:${col}22;color:${col};min-width:86px;text-align:center">${s}</span>
+      <span class="stag" style="background:${col}22;color:${col};min-width:88px;text-align:center">${s}</span>
       <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px"><span>${v.d}/${v.t} cards</span><span style="color:${col};font-weight:700">${pct}%</span></div>
-        <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${col}"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:4px">
+          <span>${v.d}/${v.t}</span><span style="color:${col};font-weight:700;font-family:'DM Mono',monospace">${p}%</span>
+        </div>
+        <div class="pbar"><div class="pfill" style="width:${p}%;background:${col}"></div></div>
       </div>
     </div>`;}).join("");
-  w.innerHTML=`
-    <div class="section-title">Meu Progresso</div>
-    <div class="section-sub">Acompanhe sua evolução por matéria e dificuldade</div>
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-num" style="color:var(--accent2)">${dCards}</div><div class="stat-lbl">Cards estudados</div><div class="stat-sub">de ${tCards} total</div></div>
-      <div class="stat-card"><div class="stat-num" style="color:#22c55e">${d1d}/${d1.length}</div><div class="stat-lbl">Fáceis feitos</div></div>
-      <div class="stat-card"><div class="stat-num" style="color:var(--gold)">${d2d}/${d2.length}</div><div class="stat-lbl">Médios feitos</div></div>
-      <div class="stat-card"><div class="stat-num" style="color:var(--red)">${d3d}/${d3.length}</div><div class="stat-lbl">Difíceis feitos</div></div>
+  const tqz=QUIZ.length,pqz=tqz?Math.round(qOk/tqz*100):0;
+  w.innerHTML=`<div class="sec-hd"><div class="sec-title">Meu Progresso</div><div class="sec-sub">Acompanhe sua evolução por matéria e nível de dificuldade</div></div>
+    <div class="stat-nums">
+      <div class="sn"><div class="sn-num" style="color:var(--v2)">${dc}</div><div class="sn-lbl">Cards estudados</div><div class="sn-sub">de ${tc} total</div></div>
+      <div class="sn"><div class="sn-num" style="color:var(--ok)">${d1d}/${d1.length}</div><div class="sn-lbl">★ Fáceis</div></div>
+      <div class="sn"><div class="sn-num" style="color:var(--go)">${d2d}/${d2.length}</div><div class="sn-lbl">★★ Médios</div></div>
+      <div class="sn"><div class="sn-num" style="color:var(--no)">${d3d}/${d3.length}</div><div class="sn-lbl">★★★ Difíceis</div></div>
+      <div class="sn"><div class="sn-num" style="color:var(--cy)">${qOk}/${tqz}</div><div class="sn-lbl">Quiz acertos</div></div>
     </div>
-    <div class="section-title" style="font-size:15px;margin-bottom:13px">Por Matéria</div>
-    ${matRows}`;
+    <div class="sec-hd" style="margin-top:10px"><div class="sec-title" style="font-size:16px">Por Matéria</div></div>
+    <div class="mat-list">${mrows}</div>`;
 }
 
 function updateHdr(){
-  const cards=getCards(), done=cards.filter(c=>studied[c.id]).length;
-  document.getElementById("stCards").textContent=`${done}/${cards.length}`;
-  const qs=getQuiz(), pct=qs.length?Math.round(qOk/qs.length*100):0;
-  document.getElementById("stQuiz").textContent=pct+"%";
+  const cs=getCards(),d=cs.filter(c=>studied[c.id]).length;
+  document.getElementById("stCards").textContent=`${d}/${cs.length}`;
+  const qs=getQuiz(),p=qs.length?Math.round(qOk/qs.length*100):0;
+  document.getElementById("stQuiz").textContent=p+"%";
   document.getElementById("stDiff").textContent=["Todos","Fácil","Médio","Difícil"][diff];
 }
 
